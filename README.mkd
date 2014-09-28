@@ -1,0 +1,14 @@
+# libcore
+
+## Description
+
+`libcore` is a library providing utility functions in C.
+
+More information can be found in the documentation (`doc/manual.mkd`).
+Use `make doc` to build a HTML documentation using
+[pandoc](http://johnmacfarlane.net/pandoc).
+
+## Contact
+
+If you have found a bug, have an idea or a question, email me at
+<khaelin@gmail.com>.
