@@ -1,0 +1,5 @@
+*.a
+*.o
+
+session.vim
+.tags
