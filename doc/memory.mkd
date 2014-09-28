@@ -20,7 +20,7 @@ library.
      void c_set_memory_allocator(const struct c_memory_allocator *allocator);
 ~~~
 
-Set the memory allocator used by all functions in the library. The library
+Sets the memory allocator used by all functions in the library. The library
 assumes that if the `malloc`, `calloc` or `realloc` functions return NULL,
 then allocation has failed and the value of `errno` indicates the cause of the
 failure.

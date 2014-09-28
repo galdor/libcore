@@ -7,11 +7,12 @@
     const char *c_get_error(void);
 ~~~
 
-Return the current error string. If there is no current error string, an empty
-string is returned. The error string can be modified by any function of the
-library.
+Returns the current error string. If there is no current error string, the
+function returns an empty string. The error string can be modified by any
+function of the library.
 
-When a function of the library fails, an error string is set.
+All functions of the library sets the error string before returning when they
+fail.
 
 ## `c_set_error`
 
@@ -19,5 +20,5 @@ When a function of the library fails, an error string is set.
     void c_set_error(const char *fmt, ...);
 ~~~
 
-Set the error string using the printf-style format string `fmt` and the list
-of variable arguments.
+Sets the error string using a `printf`-like format string `fmt` and a list of
+arguments.
