@@ -25,5 +25,6 @@
 
 #include "memory.h"
 #include "errors.h"
+#include "strings.h"
 
 #endif

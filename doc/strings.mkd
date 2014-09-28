@@ -1,0 +1,55 @@
+
+# Strings
+
+## `c_strdup`
+
+~~~ {.c}
+    char *c_strdup(const char *string);
+~~~
+
+Returns a newly allocated string with the same content as `string`. If
+memory allocation fails, the function returns a null pointer.
+
+## `c_strndup`
+
+~~~ {.c}
+    char *c_strndup(const char *string, size_t sz);
+~~~
+
+Returns a newly allocated string containg up to `sz` characters of `string`.
+If memory allocation fails, the function returns a null pointer.
+
+## `c_vasprintf`
+
+~~~ {.c}
+    int c_vasprintf(char **pstring, const char *fmt, va_list ap);
+~~~
+
+Formats a character string in a newly allocated buffer using a `printf`-like
+format string and a variable argument list, and store a pointer to the new
+string in `pstring`. Returns 0 on success, and -1 if memory allocation or
+string formatting fails.
+
+## `c_asprintf`
+
+~~~ {.c}
+    int c_asprintf(char **pstring, const char *fmt, ...);
+~~~
+
+Formats a character string in a newly allocated buffer using a `printf`-like
+format string and a list of arguments, and store a pointer to the new string
+in `pstring`. Returns 0 on success, and -1 if memory allocation or string
+formatting fails.
+
+## `c_strlcpy`
+
+~~~ {.c}
+    size_t c_strlcpy(char *dest, const char *string, size_t sz);
+~~~
+
+Copies up to `sz - 1` bytes of `string` to `dest`, ensuring that the
+destination string ends with a null byte if `sz` is not 0. Returns the length
+of `string`.
+
+If the return value is greater or equal than `sz`, then `dest` does not
+contain all the characters of `string`.

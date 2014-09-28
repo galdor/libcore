@@ -19,6 +19,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 
 - [errors](errors.html)
 - [memory](memory.html)
+- [strings](strings.html)
 
 # Contact
 

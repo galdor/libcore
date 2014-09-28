@@ -14,11 +14,16 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_CORE_H
-#define LIBCORE_CORE_H
+#ifndef LIBCORE_STRINGS_H
+#define LIBCORE_STRINGS_H
 
-#include <core/memory.h>
-#include <core/errors.h>
-#include <core/strings.h>
+char *c_strdup(const char *);
+char *c_strndup(const char *, size_t);
+
+int c_vasprintf(char **, const char *, va_list);
+int c_asprintf(char **, const char *, ...)
+    __attribute__((format(printf, 2, 3)));
+
+size_t c_strlcpy(char *, const char *, size_t);
 
 #endif
