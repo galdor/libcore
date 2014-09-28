@@ -91,7 +91,7 @@ $(utils_OBJ): $(libcore_LIB) $(libcore_INC)
 utils/%: utils/%.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-doc/%.html: doc/*.mkd
+doc/%.html: doc/%.mkd
 	pandoc $(PANDOC_OPTS) -t html5 -o $@ $<
 
 clean:

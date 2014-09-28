@@ -1,0 +1,23 @@
+
+# Errors
+
+## `c_get_error`
+
+~~~ {.c}
+    const char *c_get_error(void);
+~~~
+
+Return the current error string. If there is no current error string, an empty
+string is returned. The error string can be modified by any function of the
+library.
+
+When a function of the library fails, an error string is set.
+
+## `c_set_error`
+
+~~~ {.c}
+    void c_set_error(const char *fmt, ...);
+~~~
+
+Set the error string using the printf-style format string `fmt` and the list
+of variable arguments.

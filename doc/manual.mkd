@@ -1,0 +1,26 @@
+% libcore
+% Nicolas Martyanoff
+
+# Introduction
+
+**TODO**
+
+# License
+
+`libcore` is released under the ISC license. See the `LICENSE` file for more
+information. `libcore` is free software as defined by the OSI ^[Open Source
+Initiative: <http://opensource.org>].
+
+# Interface
+
+The name of all symbols exported by the library is prefixed by `c_`.
+
+# Modules
+
+- [errors](errors.html)
+- [memory](memory.html)
+
+# Contact
+
+If you have found a bug, have an idea or a question, email me at
+<khaelin@gmail.com>.

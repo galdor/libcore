@@ -1,0 +1,33 @@
+
+# Memory
+
+## `c_memory_allocator`
+
+~~~ {.c}
+    struct c_memory_allocator {
+        void *(*malloc)(size_t sz);
+        void (*free)(void *ptr);
+        void *(*calloc)(size_t nb, size_t sz);
+        void *(*realloc)(void *ptr, size_t sz);
+    };
+~~~
+
+This structure contains the functions used for memory allocation in the
+library.
+
+## `c_set_memory_allocator`
+~~~ {.c}
+     void c_set_memory_allocator(const struct c_memory_allocator *allocator);
+~~~
+
+Set the memory allocator used by all functions in the library. The library
+assumes that if the `malloc`, `calloc` or `realloc` functions return NULL,
+then allocation has failed and the value of `errno` indicates the cause of the
+failure.
+
+## `c_default_memory_allocator`
+~~~ {.c}
+    struct c_memory_allocator *c_default_memory_allocator;
+~~~
+
+A pointer to the default memory allocator used by the library.
