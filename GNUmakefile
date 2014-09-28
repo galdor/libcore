@@ -42,7 +42,9 @@ endif
 libcore_LIB= libcore.a
 libcore_SRC= $(wildcard src/*.c)
 libcore_INC= $(wildcard src/*.h)
-libcore_PUBINC= src/core.h
+libcore_MAININC= src/core.h
+libcore_PRIVINC= $(libcore_MAININC) src/internal.h
+libcore_PUBINC= $(filter-out $(libcore_PRIVINC),$(libcore_INC))
 libcore_OBJ= $(subst .c,.o,$(libcore_SRC))
 
 $(libcore_LIB): CFLAGS+=
@@ -56,27 +58,16 @@ $(tests_BIN): CFLAGS+= -Isrc
 $(tests_BIN): LDFLAGS+= -L.
 $(tests_BIN): LDLIBS+=
 
-# Target: utils
-utils_SRC= $(wildcard utils/*.c)
-utils_OBJ= $(subst .c,.o,$(utils_SRC))
-utils_BIN= $(subst .o,,$(utils_OBJ))
-
-$(utils_BIN): CFLAGS+= -Isrc
-$(utils_BIN): LDFLAGS+= -L.
-$(utils_BIN): LDLIBS+=
-
 # Target: doc
 doc_SRC= $(wildcard doc/*.mkd)
 doc_HTML= $(subst .mkd,.html,$(doc_SRC))
 
 # Rules
-all: lib tests utils doc
+all: lib tests doc
 
 lib: $(libcore_LIB)
 
 tests: lib $(tests_BIN)
-
-utils: lib $(utils_BIN)
 
 doc: $(doc_HTML)
 
@@ -87,17 +78,12 @@ $(tests_OBJ): $(libcore_LIB) $(libcore_INC)
 tests/%: tests/%.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-$(utils_OBJ): $(libcore_LIB) $(libcore_INC)
-utils/%: utils/%.o
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
-
 doc/%.html: doc/%.mkd
 	pandoc $(PANDOC_OPTS) -t html5 -o $@ $<
 
 clean:
 	$(RM) $(libcore_LIB) $(wildcard src/*.o)
 	$(RM) $(tests_BIN) $(wildcard tests/*.o)
-	$(RM) $(utils_BIN) $(wildcard utils/*.o)
 	$(RM) $(wildcard **/*.gc??)
 	$(RM) -r coverage
 	$(RM) -r $(doc_HTML)
@@ -111,14 +97,14 @@ install: lib
 	mkdir -p $(libdir)
 	install -m 644 $(libcore_LIB) $(libdir)
 	mkdir -p $(incdir)/core
-	install -m 644 $(libcore_PUBINC) $(incdir)
+	rm -f $(incdir)/core/*
+	install -m 644 $(libcore_MAININC) $(incdir)
+	install -m 644 $(libcore_PUBINC) $(incdir)/core
 	mkdir -p $(bindir)
-	install -m 755 $(utils_BIN) $(bindir)
 
 uninstall:
 	$(RM) $(addprefix $(libdir)/,$(libcore_LIB))
 	$(RM) -r $(incdir)/core
-	$(RM) $(addprefix $(bindir)/,$(utils_BIN))
 
 tags:
 	ctags -o .tags -a $(wildcard src/*.[hc])
