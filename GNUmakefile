@@ -56,7 +56,7 @@ tests_BIN= $(subst .o,,$(tests_OBJ))
 
 $(tests_BIN): CFLAGS+= -Isrc
 $(tests_BIN): LDFLAGS+= -L.
-$(tests_BIN): LDLIBS+=
+$(tests_BIN): LDLIBS+= -lutest -lcore
 
 # Target: doc
 doc_SRC= $(wildcard doc/*.mkd)

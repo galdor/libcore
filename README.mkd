@@ -8,6 +8,11 @@ More information can be found in the documentation (`doc/manual.mkd`).
 Use `make doc` to build a HTML documentation using
 [pandoc](http://johnmacfarlane.net/pandoc).
 
+## Tests
+
+Test suites are available in the `tests` directory. They depend on
+[libutest](https://github.com/galdor/libutest).
+
 ## Contact
 
 If you have found a bug, have an idea or a question, email me at
