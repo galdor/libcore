@@ -11,8 +11,10 @@ Returns the current error string. If there is no current error string, the
 function returns an empty string. The error string can be modified by any
 function of the library.
 
-All functions of the library sets the error string before returning when they
+All functions of the library set the error string before returning when they
 fail.
+
+This function is thread safe.
 
 ## `c_set_error`
 
@@ -22,3 +24,5 @@ fail.
 
 Sets the error string using a `printf`-like format string `fmt` and a list of
 arguments.
+
+This function is thread safe.

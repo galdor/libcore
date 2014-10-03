@@ -3,7 +3,8 @@
 
 # Introduction
 
-**TODO**
+`libcore` is a library providing utility functions in C.
+
 
 # License
 
@@ -11,17 +12,84 @@
 information. `libcore` is free software as defined by the OSI ^[Open Source
 Initiative: <http://opensource.org>].
 
+
+# Library
+
+## Portability
+
+The library is designed to work on UNIX platforms. Linux and FreeBSD are
+officially supported. Other UNIX platforms will be supported on a best effort
+basis. Microsoft Windows will not be supported.
+
+The library is developped, tested and used mainly on a x86 64 bit
+architecture. The x86 32 bit architecture is officially supported. Other
+architectures are supported on a best effort basis.
+
+## Memory
+
+Functions which allocate memory use a set of standard functions stored in a
+`c_memory_allocator` structure. One can provide a custom memory allocator
+using the `c_set_memory_allocator` function.
+
+All functions which allocate memory will handle allocation failure by
+returning an error.
+
+## Error handling
+
+Functions which can fail generally return one of the following value:
+
+- An integer whose value is -1 on failure.
+- A pointer whose value is `NULL` on failure.
+
+When a function fails, it sets an error string whose value can be accessed
+using the `c_get_error` function.
+
+Functions which fail ensure that any resource initialized by the function
+before the failure point is released before returning.
+
+When a function which has pointer arguments used for additional return values
+fails, the value referenced by these pointers is undefined.
+
+## Thread safety
+
+Unless indicated otherwise, functions are not thread safe. Making every
+function thread safe has a significant performance cost and is often
+unnecessary.
+
+However the library tries to minimize shared state. Data structures can be
+used independently in multiple threads, as long as each structure is only
+manipulated in the thread that created it.
+
+## Signal handling
+
+Unless indicated otherwise, functions do not manipulate signal handlers in any
+way.
+
+Signal interruption in system calls is handled differently depending on the
+function. Refer to the documentation of each function for more information.
+
+Functions do not try to be safe to use in signal handlers.
+
 # Interface
 
 The name of all symbols exported by the library is prefixed by `c_`.
+
 
 # Modules
 
 - [errors](errors.html)
 - [memory](memory.html)
 - [strings](strings.html)
+- [buffers](buffers.html)
+
+
+# Bugs
+
+If you find a bug, please report it on
+[GitHub](https://github.com/galdor/libcore/issues). Include information about
+the platform (architecture, operating system name and version, libc version…).
+
 
 # Contact
 
-If you have found a bug, have an idea or a question, email me at
-<khaelin@gmail.com>.
+If you have an idea or a question, email me at <khaelin@gmail.com>.
