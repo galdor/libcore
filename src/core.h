@@ -20,5 +20,6 @@
 #include <core/memory.h>
 #include <core/errors.h>
 #include <core/strings.h>
+#include <core/buffer.h>
 
 #endif

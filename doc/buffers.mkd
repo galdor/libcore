@@ -1,0 +1,256 @@
+
+# Buffers
+
+## `c_buffer_new`
+~~~ {.c}
+    struct c_buffer *c_buffer_new(void);
+~~~~
+
+Creates and returns a new empty buffer.
+
+## `c_buffer_delete`
+~~~ {.c}
+    void c_buffer_delete(struct c_buffer *buf);
+~~~
+
+Frees `buf` and all data associated to it. If `buf` is null or if the buffer is
+not initialized, no action is performed.
+
+## `c_buffer_data`
+~~~ {.c}
+    char *c_buffer_data(const struct c_buffer *buf);
+~~~
+
+Returns a pointer to the data stored in `buf`. If `buf` is not initialized,
+`c_buffer_data` returns `NULL`.
+
+## `c_buffer_length`
+~~~ {.c}
+    size_t c_buffer_length(const struct c_buffer *buf);
+~~~
+
+Returns the length of `buf`, i.e. the number of bytes stored inside it.
+
+## `c_buffer_free_space`
+~~~ {.c}
+    size_t c_buffer_free_space(const struct c_buffer *buf);
+~~~
+
+Returns the size of the free space at the end of `buf`.
+
+## `c_buffer_size`
+~~~ {.c}
+    size_t c_buffer_size(const struct c_buffer *buf);
+~~~
+
+Returns the size of `buf`, i.e. the number of bytes allocated for its content.
+The size of the buffer is greater or equal to its length.
+
+## `c_buffer_reset`
+~~~ {.c}
+    void c_buffer_reset(struct c_buffer *buf);
+~~~
+
+Clears all data stored in `buf` and release the associated memory.
+
+## `c_buffer_clear`
+~~~ {.c}
+    void c_buffer_clear(struct c_buffer *buf);
+~~~
+
+Clears all data stored in `buf`. Note that this function does not actually
+modify the content of the buffer and has a complexity of `Ο(1)`.
+
+## `c_buffer_truncate`
+~~~ {.c}
+    void c_buffer_truncate(struct c_buffer *buf, size_t sz);
+~~~
+
+Truncates the content of `buf` to `sz` bytes. Note that this function does not
+actually modify the content of the buffer and has a complexity of `Ο(1)`.
+
+## `c_buffer_increase_length`
+~~~ {.c}
+    int c_buffer_increase_length(struct c_buffer *buf, size_t n);
+~~~
+
+Increases the length of `buf` by `n` bytes. Note that this function does not
+modify the content of the buffer, only its length.
+
+`c_buffer_increase_length` is to be used with `c_buffer_reserve` to write
+directly to the buffer. `c_buffer_reserve` reserves some space and returns a
+pointer to the end of the buffer. One can then use this pointer to write to
+the buffer, and call `c_buffer_increase_length` to update its length.
+
+If `n` is too large, `c_buffer_increase_length` returns -1. If not, it
+returns 0.
+
+## `c_buffer_reserve`
+~~~ {.c}
+    char *c_buffer_reserve(struct c_buffer *buf, size_t sz) {
+~~~
+
+Makes sure that `buf` has at least `sz` bytes of free contiguous memory at its
+end, then return a pointer to the first byte after the end of `buf`.
+
+If memory allocation fails, `c_buffer_reserve` returns `NULL`.
+
+## `c_buffer_insert`
+~~~ {.c}
+    int c_buffer_insert(struct c_buffer *buf, size_t offset, const char *data,
+                         size_t sz);
+~~~
+
+Copies `sz` bytes referenced by `data` at the offset `offset` of `buf`. If
+`offset` is equal to the length of `buf`, data are copied to the end of `buf`.
+If not, the content of `buf` after `offset` is moved to make place for new
+data.
+
+If a memory allocation function fails, `c_buffer_insert` returns -1. If not,
+it returns 0.
+
+## `c_buffer_add`
+~~~ {.c}
+    int c_buffer_add(struct c_buffer *buf, const char *data, size_t sz);
+~~~
+
+Copies `sz` bytes referenced by `data` to the end of `buf`.
+
+If a memory allocation function fails, `c_buffer_add` returns -1. If not,
+it returns 0.
+
+## `c_buffer_add_buffer`
+~~~ {.c}
+    int c_buffer_add_buffer(struct c_buffer *buf, const struct c_buffer *src);
+~~~
+
+Copies the content of the `src` buffer to `buf`.
+
+If a memory allocation function fails, `c_buffer_add_buffer` returns -1.
+If not, it returns 0.
+
+## `c_buffer_add_string`
+~~~ {.c}
+    int c_buffer_add_string(struct c_buffer *buf, const char *str);
+~~~
+
+Copies the null-terminated string `str` to `buf`. Note that the final `\0`
+byte is not copied.
+
+If a memory allocation function fails, `c_buffer_add_string` returns -1.
+If not, it returns 0.
+
+## `c_buffer_add_vprintf`
+~~~ {.c}
+    int c_buffer_add_vprintf(struct c_buffer *buf, const char *fmt, va_list ap);
+~~~
+
+Adds formatted data defined by the format string `fmt` and the `va_list`
+variable `ap` to `buf`. Note that no final '\0' is added.
+
+If formatting or memory allocation fails, `c_buffer_add_printf` returns -1.
+If not, it returns 0.
+
+## `c_buffer_add_printf`
+~~~ {.c}
+    int c_buffer_add_printf(struct c_buffer *buf, const char *fmt, ...)
+~~~
+
+Adds formatted data defined by the format string `fmt` to `buf`. Note that no
+final '\0' is added.
+
+If formatting or memory allocation fails, `c_buffer_add_printf` returns -1.
+If not, it returns 0.
+
+## `c_buffer_skip`
+~~~ {.c}
+    void c_buffer_skip(struct c_buffer *buf, size_t n);
+~~~
+
+Removes up to `n` bytes at the beginning of `buf`. Note that this function does
+not actually modify the content of the buffer and has a complexity of `Ο(1)`.
+
+## `c_buffer_remove_before`
+~~~ {.c}
+    size_t c_buffer_remove_before(struct c_buffer *buf, size_t offset, size_t n);
+~~~
+
+Removes up to `n` bytes before offset `offset` in `buf`.
+
+## `c_buffer_remove_after`
+~~~ {.c}
+    size_t c_buffer_remove_after(struct c_buffer *buf, size_t offset, size_t n);
+~~~
+
+Removes up to `n` bytes after offset `offset` in `buf`.
+
+## `c_buffer_remove`
+~~~ {.c}
+    size_t c_buffer_remove(struct c_buffer *buf, size_t n);
+~~~
+
+Removes up to `n` bytes at the end of `buf`. Note that this function does not
+actually modify the content of the buffer and has a complexity of `Ο(1)`.
+
+## `c_buffer_extract`
+~~~ {.c}
+    void *c_buffer_extract(struct c_buffer *buf, size_t *plen);
+~~~
+
+Resets `buf` without releasing the memory associated with the content and
+returns a pointer on the content, effectively transferring ownership of the
+content to the caller.
+
+If `buf` is empty, `c_buffer_extract` returns NULL.
+
+If `plen` is not `NULL`, stores the length of the content in the memory
+referenced by `plen`.
+
+`c_buffer_extract` uses `realloc` to truncate the memory used to store the
+content of the buffer to its real length. If the call to `realloc` fails,
+`c_buffer_extract` returns NULL, and the content of the buffer is not
+modified.
+
+## `c_buffer_extract_string`
+~~~ {.c}
+    char *c_buffer_extract_string(struct c_buffer *buf, size_t *plen);
+~~~
+
+`c_buffer_extract_string` works the same way that `c_buffer_extract`, but
+ensures that the returned data end with a null byte.
+
+## `c_buffer_dup`
+~~~ {.c}
+    char *c_buffer_dup(const struct c_buffer *buf);
+~~~
+
+Duplicates the content of `buf` and returns a pointer to the newly allocated
+data. If `buf` is empty or if memory cannot be allocated, `c_buffer_dup`
+returns `NULL`.
+
+## `c_buffer_dup_string`
+~~~ {.c}
+    char *c_buffer_dup_string(const struct c_buffer *buf);
+~~~
+
+Duplicates the content of `buf` as a null-terminated string and returns a
+pointer to the newly allocated data. If `buf` is empty, an empty string is
+returned. If memory cannot be allocated, `c_buffer_dup_string` returns
+`NULL`.
+
+## `c_buffer_read`
+~~~ {.c}
+    ssize_t c_buffer_read(struct c_buffer *buf, int fd, size_t n);
+~~~
+
+Uses the `read` POSIX function to read up to `n` bytes from file descriptor
+`fd` at the end of `buf`. Returns the value returned by `read`.
+
+## `c_buffer_write`
+~~~ {.c}
+    ssize_t c_buffer_write(struct c_buffer *buf, int fd);
+~~~
+
+Uses the `write` POSIX function to write the content of `buf` to file
+descriptor `fd`. Returns the value returned by `write`. If the write operation
+succeeds, written data are skipped in `buf`.

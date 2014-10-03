@@ -6,4 +6,5 @@ session.vim
 
 /doc/*.html
 
+/tests/buffer
 /tests/strings

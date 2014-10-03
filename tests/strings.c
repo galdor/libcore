@@ -14,9 +14,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "internal.h"
-
 #include <utest.h>
+
+#include "internal.h"
 
 TEST(strndup) {
 #define C_TEST_STRNDUP(string_, len_, expected_string_) \
