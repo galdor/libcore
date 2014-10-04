@@ -17,6 +17,8 @@
 #ifndef LIBCORE_ERRORS_H
 #define LIBCORE_ERRORS_H
 
+#define C_ERROR_BUFSZ 1024U
+
 const char *c_get_error(void);
 void c_set_error(const char *, ...)
     __attribute__((format(printf, 1, 2)));

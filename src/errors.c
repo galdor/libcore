@@ -16,8 +16,6 @@
 
 #include "internal.h"
 
-#define C_ERROR_BUFSZ 1024U
-
 static __thread char c_error_buf[C_ERROR_BUFSZ];
 
 const char *
