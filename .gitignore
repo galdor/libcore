@@ -7,4 +7,5 @@ session.vim
 /doc/*.html
 
 /tests/buffer
+/tests/hash-table
 /tests/strings

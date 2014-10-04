@@ -1,0 +1,257 @@
+
+# Hash tables
+
+## `c_hash_func`
+~~~ {.c}
+    typedef uint32_t (*c_hash_func)(const void *key);
+~~~
+
+A pointer on a hash function.
+
+## `c_equal_func`
+~~~ {.c}
+    typedef bool (*c_equal_func)(const void *k1, const void *k2);
+~~~
+
+A pointer on an equality function. An equality function returns `true` if `k1`
+and `k2` are the same or `false` if they are not.
+
+## `c_hash_table_new`
+~~~ {.c}
+    struct c_hash_table *c_hash_table_new(c_hash_func hash_func,
+                                          c_equal_func equal_func);
+~~~
+
+Creates and returns a new hash table. If the creation failed, `NULL` is
+returned. `hash_func` is the function which will be used by the table to hash
+the keys. `equal_func` is the function which will be used to test whether two
+keys are equal or not.
+
+## `c_hash_table_delete`
+~~~ {.c}
+    void c_hash_table_delete(struct c_hash_table *table);
+~~~
+
+Deletes a hash table, releasing any memory that was allocated for it.
+
+If `table` is null, no action is performed.
+
+The content of the memory referenced by `table` is undefined after
+`c_hash_table_delete` has been called.
+
+## `c_hash_table_nb_entries`
+~~~ {.c}
+    size_t c_hash_table_nb_entries(const struct c_hash_table *table);
+~~~
+
+Returns the number of entries currently stored in a hash table.
+
+## `c_hash_table_is_empty`
+~~~ {.c}
+    bool c_hash_table_is_empty(const struct c_hash_table *table);
+~~~
+
+Returns `true` if a hash table is empty or `false` else.
+
+## `c_hash_table_clear`
+~~~ {.c}
+    void c_hash_table_clear(struct c_hash_table *table);
+~~~
+
+Removes all the entries from a hash table.
+
+## `c_hash_table_insert`
+~~~ {.c}
+    int c_hash_table_insert(struct c_hash_table *table, void *key, void *value);
+~~~
+
+Inserts a new entry or updates an existing one in a hash table.
+
+If an entry with a key equal to `key` already exists in the table, its key is
+set to `key` and its value is set to `value`. If not, a new entry is inserted.
+
+`c_hash_table_insert` returns `1` if a new entry was inserted, `0` if an
+existing entry was updated or `-1` if the insertion failed.
+
+## `c_hash_table_insert2`
+~~~ {.c}
+    int c_hash_table_insert2(struct c_hash_table *table, void *key, void *value,
+                             void **old_key, void **old_value);
+~~~
+
+Inserts a new entry or updates an existing one in a hash table.
+
+If an entry with a key equal to `key` already exists in the table, its key is
+set to `key` and its value is set to `value`. In that case, pointers to the
+key and value of the entry being replaced are stored in the pointers
+referenced by `old_key` and `old_value` if `old_key` and `old_value` are not
+null.
+
+If there is no entry with a key equal to `key` in the table, a new entry is
+inserted, and the pointers referenced by `old_key` and `old_value` are set to
+`NULL` if `old_key` and `old_value` are not null.
+
+`c_hash_table_insert2` returns `1` if a new entry was inserted, `0` if an
+existing entry was updated or `-1` if the insertion failed.
+
+Note that `old_key` and `old_value` are subject to the same warning than
+`value` in `c_hash_table_get`.
+
+## `c_hash_table_remove`
+~~~ {.c}
+    int c_hash_table_remove(struct c_hash_table *table, const void *key);
+~~~
+
+Removes an entry from a hash table.
+
+If the table does not contain any entry with this key, no action is performed.
+
+`c_hash_table_remove` returns 1 if an entry was removed or 0 if not.
+
+## `c_hash_table_remove2`
+~~~ {.c}
+    int c_hash_table_remove2(struct c_hash_table *table, const void *key,
+                             void **old_key, void **old_value);
+~~~
+
+Removes an entry from a hash table.
+
+If the table does not contain any entry with this key, no action is performed.
+
+If an entry was found and removed, its key is stored in the pointer referenced
+by `old_key` is `old_key` is not null, and its value is stored in the pointer
+referenced by `old_value` if `old_value` is not null.
+
+`c_hash_table_remove` returns 1 if an entry was removed or 0 if not.
+
+## `c_hash_table_get`
+~~~ {.c}
+    int c_hash_table_get(struct c_hash_table *table, const void *key, void **value);
+~~~
+
+Retrieves the entry associated with a key in a hash table and copies its value
+to the pointer referenced by `value`.
+
+`c_hash_table_get` returns `1` if an entry with this key was found or `0` if not.
+
+If no entry was found with this key, the pointer referenced by `value` is not
+modified.
+
+Note that values are stored as pointers (`void *`). When values are not
+pointers (for example integers, using `C_INT32_TO_POINTER`), `c_hash_table_get`
+will still write the whole pointer to the memory referenced by `value`.
+Therefore the caller must make sure that the memory referenced by `value` is
+at least of the size of a pointer. For example, when storing integers, one
+should use `intptr_t`.
+
+## `c_hash_table_contains`
+~~~ {.c}
+    bool c_hash_table_contains(struct c_hash_table *table, const void *key);
+~~~
+
+Returns `true` if a hash table contains an entry or `false` if it does not.
+
+## `c_hash_table_print`
+~~~ {.c}
+    void c_hash_table_print(struct c_hash_table *table, FILE *file);
+~~~
+
+Prints the content of a hash table to a file. No guarantee is provided
+regarding the format of the output.
+
+## `c_hash_table_iterate`
+~~~ {.c}
+    struct c_hash_table_iterator *c_hash_table_iterate(struct c_hash_table *table);
+~~~
+
+Creates and returns an object used to iterate through the entries of a hash
+table.
+
+The iterator is valid as long as no entry is added to the hash table. The
+behavior of an iterator when it is not valid is undefined.
+
+If the library is built in debug mode, assertions will make sure that no
+element is added to the hash table while there exists an iterator associated
+with it.
+
+## `c_hash_table_iterator_delete`
+~~~ {.c}
+    void c_hash_table_iterator_delete(struct c_hash_table_iterator *it);
+~~~
+
+Deletes an iterator.
+
+If `it` is null, no action is performed.
+
+The content of the memory referenced by `it` is undefined after
+`c_hash_table_iterator_delete` has been called.
+
+## `c_hash_table_iterator_next`
+~~~ {.c}
+    int c_hash_table_iterator_next(struct c_hash_table_iterator *it,
+                                   void **key, void **value);
+~~~
+
+Advances an iterator. If a next entry is found in the hash table, it copies
+its key and value to the pointers referenced by `key` and `value` and return
+1. `key` and/or `value` can be null.
+
+If the iterator has reached the end of the hash table, the pointers referenced
+by `key` and `value` are not modified and 0 is returned.
+
+Note that `key` and `value` are subject to the same warning than `value` in
+`c_hash_table_get`.
+
+## `c_hash_table_iterator_set_value`
+~~~ {.c}
+    void c_hash_table_iterator_set_value(struct c_hash_table_iterator *it,
+                                         void *value);
+~~~
+
+Modify the value of the hash table entry an iterator is currently pointing on.
+
+If the iterator is not currently pointing on an entry, no action is performed.
+
+## `c_hash_int32`
+~~~ {.c}
+    uint32_t c_hash_int32(const void *key);
+~~~
+
+A hash function to use for hash tables whose keys are 32 bit integers.
+
+## `c_equal_int32`
+~~~ {.c}
+    bool c_equal_int32(const void *k1, const void *k2);
+~~~
+
+An equality function to use for hash tables whose keys are 32 bit integers.
+
+## `c_hash_string`
+~~~ {.c}
+    uint32_t c_hash_string(const void *key);
+~~~
+
+A hash function to use for hash tables whose keys are character strings.
+
+## `c_equal_string`
+~~~ {.c}
+    bool c_equal_string(const void *k1, const void *k2);
+~~~
+
+An equality function to use for hash tables whose keys are character strings.
+
+## `C_INT32_TO_POINTER`
+~~~ {.c}
+    #define C_INT32_TO_POINTER(i_) ((void *)(intptr_t)(int32_t)(i_))
+~~~
+
+A macro to convert a 32 bit integer to a pointer value. It can be used when
+the keys or values of a hash tables are 32 bit integers.
+
+## `C_POINTER_TO_IN32`
+~~~ {.c}
+    #define C_POINTER_TO_INT32(p_) ((int32_t)(intptr_t)(p_))
+~~~
+
+A macro to convert a pointer value to a 32 bit integer. It can be used when
+the keys or values of a hash tables are 32 bit integers.
