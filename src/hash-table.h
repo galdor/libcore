@@ -17,8 +17,6 @@
 #ifndef LIBCORE_HASH_TABLE_H
 #define LIBCORE_HASH_TABLE_H
 
-#include "internal.h"
-
 #define C_INT32_TO_POINTER(i_) ((void *)(intptr_t)(int32_t)(i_))
 #define C_POINTER_TO_INT32(p_) ((int32_t)(intptr_t)(p_))
 
