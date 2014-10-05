@@ -9,3 +9,4 @@ session.vim
 /tests/buffer
 /tests/hash-table
 /tests/strings
+/tests/vector

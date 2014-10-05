@@ -14,14 +14,18 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_CORE_H
-#define LIBCORE_CORE_H
+#ifndef LIBCORE_VECTOR_H
+#define LIBCORE_VECTOR_H
 
-#include <core/memory.h>
-#include <core/errors.h>
-#include <core/strings.h>
-#include <core/buffer.h>
-#include <core/vectors.h>
-#include <core/hash-table.h>
+struct c_vector *c_vector_new(size_t);
+void c_vector_delete(struct c_vector *);
+
+size_t c_vector_length(const struct c_vector *);
+bool c_vector_is_empty(const struct c_vector *);
+void *c_vector_entry(const struct c_vector *, size_t);
+
+void c_vector_clear(struct c_vector *);
+int c_vector_append(struct c_vector *, void *);
+void c_vector_remove(struct c_vector *, size_t);
 
 #endif

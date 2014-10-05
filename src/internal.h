@@ -29,6 +29,7 @@
 #include "errors.h"
 #include "strings.h"
 #include "buffer.h"
+#include "vector.h"
 #include "hash-table.h"
 
 #endif

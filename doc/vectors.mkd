@@ -1,0 +1,64 @@
+
+# Vectors
+
+## `c_vector_new`
+~~~ {.c}
+    struct c_vector *c_vector_new(size_t entry_sz);
+~~~
+
+Creates and returns a new vector which stores elements of size `entry_sz`.
+The behaviour of the vector is undefined if `entry_sz` is 0.
+
+Returns `NULL` if memory allocation failed.
+
+## `c_vector_delete`
+~~~ {.c}
+    void c_vector_delete(struct c_vector *vector);
+~~~
+
+Deletes a vector and all memory associated with it.
+
+## `c_vector_length`
+~~~ {.c}
+    size_t c_vector_length(const struct c_vector *vector);
+~~~
+
+Returns the number of entries stored in a vector.
+
+## `c_vector_is_empty`
+~~~ {.c}
+    bool c_vector_is_empty(const struct c_vector *vector);
+~~~
+
+Returns `true` if a vector does not contain any entry, or `false` else.
+
+## `c_vector_entry`
+~~~ {.c}
+    void *c_vector_entry(const struct c_vector *vector, size_t idx);
+~~~
+
+Returns a pointer on an entry of a vector. The behaviour of the function is
+undefined if `idx` if greater or equal to the number of entries in the vector.
+
+## `c_vector_clear`
+~~~ {.c}
+    void c_vector_clear(struct c_vector *vector);
+~~~
+
+Removes all entries in a vector. This function does not release any memory.
+
+## `c_vector_append`
+~~~ {.c}
+    int c_vector_append(struct c_vector *vector, void *entry);
+~~~
+
+Appends an element to the end of a vector. Returns 0 on success, or -1 if
+memory allocation failed.
+
+## `c_vector_remove`
+~~~ {.c}
+    void c_vector_remove(struct c_vector *vector, size_t idx);
+~~~
+
+Removes an element from a vector. The behaviour of the function is undefined
+if `idx` is greater or equal to the number of entries in the vector.
