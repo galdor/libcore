@@ -21,7 +21,7 @@
 #include <core/errors.h>
 #include <core/strings.h>
 #include <core/buffer.h>
-#include <core/vectors.h>
+#include <core/vector.h>
 #include <core/hash-table.h>
 
 #endif
