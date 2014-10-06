@@ -29,6 +29,7 @@ void *c_vector_entry(const struct c_vector *, size_t);
 
 void c_vector_clear(struct c_vector *);
 int c_vector_append(struct c_vector *, const void *);
+void c_vector_set(struct c_vector *, size_t, const void *);
 void c_vector_remove(struct c_vector *, size_t);
 
 #endif

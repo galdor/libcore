@@ -92,6 +92,14 @@ c_vector_append(struct c_vector *vector, const void *value) {
 }
 
 void
+c_vector_set(struct c_vector *vector, size_t index, const void *value) {
+    assert(index < vector->nb_entries);
+
+    memcpy(vector->entries + index * vector->entry_sz,
+           value, vector->entry_sz);
+}
+
+void
 c_vector_remove(struct c_vector *vector, size_t index) {
     assert(index < vector->nb_entries);
 

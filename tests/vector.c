@@ -52,6 +52,34 @@ TEST(append) {
     c_vector_delete(vector);
 }
 
+TEST(set) {
+    struct c_vector *vector;
+    int value;
+
+    vector = c_vector_new(sizeof(int));
+
+    value = 1;
+    c_vector_append(vector, &value);
+    value = 2;
+    c_vector_append(vector, &value);
+    value = 3;
+    c_vector_append(vector, &value);
+
+    value = 4;
+    c_vector_set(vector, 0, &value);
+    TEST_INT_EQ(*(int *)c_vector_entry(vector, 0), 4);
+
+    value = 5;
+    c_vector_set(vector, 1, &value);
+    TEST_INT_EQ(*(int *)c_vector_entry(vector, 1), 5);
+
+    value = 6;
+    c_vector_set(vector, 2, &value);
+    TEST_INT_EQ(*(int *)c_vector_entry(vector, 2), 6);
+
+    c_vector_delete(vector);
+}
+
 TEST(remove) {
     struct c_vector *vector;
     int value;
@@ -142,6 +170,7 @@ main(int argc, char **argv) {
 
     TEST_RUN(suite, initialization);
     TEST_RUN(suite, append);
+    TEST_RUN(suite, set);
     TEST_RUN(suite, remove);
     TEST_RUN(suite, clear);
 

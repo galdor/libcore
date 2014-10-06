@@ -55,6 +55,14 @@ Removes all entries in a vector. This function does not release any memory.
 Appends an element to the end of a vector. Returns 0 on success, or -1 if
 memory allocation failed.
 
+## `c_vector_set`
+~~~ {.c}
+    void c_vector_set(struct c_vector *vector, size_t idx, const void *value);
+~~~
+
+Sets the value of an entry of a vector. The behaviour of the function is
+undefined if `idx` is greater or equal to the number of entries in the vector.
+
 ## `c_vector_remove`
 ~~~ {.c}
     void c_vector_remove(struct c_vector *vector, size_t idx);
