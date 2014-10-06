@@ -17,6 +17,9 @@
 #ifndef LIBCORE_VECTOR_H
 #define LIBCORE_VECTOR_H
 
+#include <stdbool.h>
+#include <stdlib.h>
+
 struct c_vector *c_vector_new(size_t);
 void c_vector_delete(struct c_vector *);
 
