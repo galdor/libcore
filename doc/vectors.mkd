@@ -49,7 +49,7 @@ Removes all entries in a vector. This function does not release any memory.
 
 ## `c_vector_append`
 ~~~ {.c}
-    int c_vector_append(struct c_vector *vector, void *entry);
+    int c_vector_append(struct c_vector *vector, const void *value);
 ~~~
 
 Appends an element to the end of a vector. Returns 0 on success, or -1 if

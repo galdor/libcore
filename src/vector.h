@@ -28,7 +28,7 @@ bool c_vector_is_empty(const struct c_vector *);
 void *c_vector_entry(const struct c_vector *, size_t);
 
 void c_vector_clear(struct c_vector *);
-int c_vector_append(struct c_vector *, void *);
+int c_vector_append(struct c_vector *, const void *);
 void c_vector_remove(struct c_vector *, size_t);
 
 #endif

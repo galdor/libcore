@@ -67,7 +67,7 @@ c_vector_is_empty(const struct c_vector *vector) {
 }
 
 int
-c_vector_append(struct c_vector *vector, void *entry) {
+c_vector_append(struct c_vector *vector, const void *value) {
     size_t entries_sz;
     void *entries;
 
@@ -83,7 +83,7 @@ c_vector_append(struct c_vector *vector, void *entry) {
     }
 
     memcpy(entries + vector->nb_entries * vector->entry_sz,
-           entry, vector->entry_sz);
+           value, vector->entry_sz);
 
     vector->entries_sz = entries_sz;
     vector->entries = entries;
