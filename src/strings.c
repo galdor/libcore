@@ -71,6 +71,8 @@ c_vasprintf(char **pstr, const char *fmt, va_list ap) {
             c_free(str);
             return -1;
         }
+
+        str = nstr;
     }
 }
 
