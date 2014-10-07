@@ -19,6 +19,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #define C_INT32_TO_POINTER(i_) ((void *)(intptr_t)(int32_t)(i_))
