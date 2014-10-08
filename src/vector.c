@@ -56,6 +56,11 @@ c_vector_clear(struct c_vector *vector) {
     vector->nb_entries = 0;
 }
 
+void *
+c_vector_entries(const struct c_vector *vector) {
+    return vector->entries;
+}
+
 size_t
 c_vector_length(const struct c_vector *vector) {
     return vector->nb_entries;

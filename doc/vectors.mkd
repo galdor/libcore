@@ -18,6 +18,14 @@ Returns `NULL` if memory allocation failed.
 
 Deletes a vector and all memory associated with it.
 
+## `c_vector_entries`
+~~~ {.c}
+    void *c_vector_entries(const struct c_vector *vector);
+~~~
+
+Return a pointer on the entries of a vector. All entries are stored in a
+single chunk of memory.
+
 ## `c_vector_length`
 ~~~ {.c}
     size_t c_vector_length(const struct c_vector *vector);

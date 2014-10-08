@@ -23,6 +23,7 @@
 struct c_vector *c_vector_new(size_t);
 void c_vector_delete(struct c_vector *);
 
+void *c_vector_entries(const struct c_vector *);
 size_t c_vector_length(const struct c_vector *);
 bool c_vector_is_empty(const struct c_vector *);
 void *c_vector_entry(const struct c_vector *, size_t);
