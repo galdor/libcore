@@ -70,6 +70,7 @@ function. Refer to the documentation of each function for more information.
 
 Functions do not try to be safe to use in signal handlers.
 
+
 # Interface
 
 The name of all symbols exported by the library is prefixed by `c_`.
@@ -83,6 +84,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 - [buffers](buffers.html)
 - [vectors](vectors.html)
 - [hash tables](hash-tables.html)
+- [utf8](utf8.html)
 
 
 # Bugs

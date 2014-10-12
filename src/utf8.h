@@ -14,15 +14,12 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_CORE_H
-#define LIBCORE_CORE_H
+#ifndef LIBCORE_UTF8_H
+#define LIBCORE_UTF8_H
 
-#include <core/memory.h>
-#include <core/errors.h>
-#include <core/strings.h>
-#include <core/buffer.h>
-#include <core/vector.h>
-#include <core/hash-table.h>
-#include <core/utf8.h>
+int c_utf8_read_codepoint(const char *, uint32_t *, size_t *);
+
+bool c_utf8_is_valid_codepoint(uint32_t);
+bool c_utf8_is_valid_string(const char *);
 
 #endif

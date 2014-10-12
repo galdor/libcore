@@ -31,5 +31,6 @@
 #include "buffer.h"
 #include "vector.h"
 #include "hash-table.h"
+#include "utf8.h"
 
 #endif

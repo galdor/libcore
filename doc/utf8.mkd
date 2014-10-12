@@ -1,0 +1,26 @@
+
+# utf8
+
+## `c_utf8_read_codepoint`
+~~~ {.c}
+    int c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
+                              size_t *plength);
+~~~
+
+Reads a unicode codepoint from a string and stores it in `pcodepoint`. If
+`plength` is not null, use it to return the length of the UTF-8 sequence read.
+
+## `c_utf8_is_valid_codepoint`
+~~~ {.c}
+    bool c_utf8_is_valid_codepoint(uint32_t codepoint);
+~~~
+
+Returns a boolean indicating whether a unicode codepoint is valid or not.
+
+## `c_utf8_is_valid_string`
+~~~ {.c}
+    bool c_utf8_is_valid_string(const char *string);
+~~~
+
+Returns a boolean indicating whether a character string is a valid UTF-8
+string.
