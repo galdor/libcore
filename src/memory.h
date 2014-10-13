@@ -17,6 +17,8 @@
 #ifndef LIBCORE_MEMORY_H
 #define LIBCORE_MEMORY_H
 
+#include <stdlib.h>
+
 struct c_memory_allocator {
     void *(*malloc)(size_t sz);
     void (*free)(void *ptr);
