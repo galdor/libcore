@@ -17,6 +17,8 @@
 #ifndef LIBCORE_BUFFER_H
 #define LIBCORE_BUFFER_H
 
+#include <sys/types.h>
+
 #include <stdlib.h>
 
 struct c_buffer *c_buffer_new(void);
