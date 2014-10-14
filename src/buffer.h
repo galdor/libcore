@@ -17,6 +17,8 @@
 #ifndef LIBCORE_BUFFER_H
 #define LIBCORE_BUFFER_H
 
+#include <stdlib.h>
+
 struct c_buffer *c_buffer_new(void);
 void c_buffer_delete(struct c_buffer *);
 
