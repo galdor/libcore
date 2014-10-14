@@ -19,7 +19,7 @@ platform= $(shell uname -s)
 
 ifeq ($(platform), Linux)
 	CFLAGS+= -DC_PLATFORM_LINUX
-	CFLAGS+= -D_POSIX_C_SOURCE=200809L -D_BSD_SOURCE
+	CFLAGS+= -D_POSIX_C_SOURCE=200809L
 endif
 
 # Debug
