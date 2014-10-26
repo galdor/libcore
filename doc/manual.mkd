@@ -84,7 +84,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 - [buffers](buffers.html)
 - [vectors](vectors.html)
 - [hash tables](hash-tables.html)
-- [utf8](utf8.html)
+- [unicode](unicode.html)
 
 
 # Bugs

@@ -14,8 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_UTF8_H
-#define LIBCORE_UTF8_H
+#ifndef LIBCORE_UNICODE_H
+#define LIBCORE_UNICODE_H
 
 int c_utf8_read_codepoint(const char *, uint32_t *, size_t *);
 

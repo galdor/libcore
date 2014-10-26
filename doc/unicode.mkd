@@ -1,5 +1,5 @@
 
-# utf8
+# unicode
 
 ## `c_utf8_read_codepoint`
 ~~~ {.c}

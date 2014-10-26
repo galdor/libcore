@@ -85,7 +85,7 @@ int
 main(int argc, char **argv) {
     struct test_suite *suite;
 
-    suite = test_suite_new("utf8");
+    suite = test_suite_new("unicode");
     test_suite_initialize_from_args(suite, argc, argv);
 
     test_suite_start(suite);

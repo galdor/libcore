@@ -23,6 +23,6 @@
 #include <core/buffer.h>
 #include <core/vector.h>
 #include <core/hash-table.h>
-#include <core/utf8.h>
+#include <core/unicode.h>
 
 #endif
