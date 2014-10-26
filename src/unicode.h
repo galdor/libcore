@@ -17,9 +17,18 @@
 #ifndef LIBCORE_UNICODE_H
 #define LIBCORE_UNICODE_H
 
+/* Codepoints */
+bool c_codepoint_is_valid(uint32_t);
+
+/* Unicode strings */
+size_t c_ustring_length(const uint32_t *);
+bool c_ustring_equal(const uint32_t *, const uint32_t *);
+
+/* UTF-8 */
 int c_utf8_read_codepoint(const char *, uint32_t *, size_t *);
 
-bool c_utf8_is_valid_codepoint(uint32_t);
 bool c_utf8_is_valid_string(const char *);
+
+uint32_t *c_utf8_decode(const char *);
 
 #endif

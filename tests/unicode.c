@@ -81,6 +81,56 @@ TEST(codepoint_read) {
 #undef C_TEST_INVALID_CODEPOINT
 }
 
+TEST(utf8_decode) {
+    uint32_t *ustring;
+
+#define C_TEST_UTF8_DECODE(string_, ...)                                 \
+    do {                                                                 \
+        uint32_t expected_ustring[] = { __VA_ARGS__ };                   \
+                                                                         \
+        ustring = c_utf8_decode(string_);                                \
+        if (!ustring)                                                    \
+            TEST_ABORT("cannot decode utf8 string: %s", c_get_error());  \
+                                                                         \
+        TEST_UINT_EQ(c_ustring_length(ustring),                          \
+                     c_ustring_length(expected_ustring));                \
+        TEST_TRUE(c_ustring_equal(ustring, expected_ustring));           \
+    } while (0)
+
+    C_TEST_UTF8_DECODE("", 0x0);
+    C_TEST_UTF8_DECODE("\x61", 0x61, 0x0);
+    C_TEST_UTF8_DECODE("\x66\x6f\x6f", 0x66, 0x6f, 0x6f, 0x0);
+    C_TEST_UTF8_DECODE("\xc3\xa9", 0xe9, 0x0);
+    C_TEST_UTF8_DECODE("\xe2\x82\xac", 0x20ac, 0x0);
+    C_TEST_UTF8_DECODE("\xe1\x83\x90\xe1\x83\xae\xe1\x83\x9a",
+                       0x10d0, 0x10ee, 0x10da, 0x0);
+
+#undef C_TEST_UTF8_DECODE
+
+#define C_TEST_INVALID_UTF8(string_)                                     \
+    do {                                                                 \
+        ustring = c_utf8_decode(string_);                                \
+        if (ustring)                                                     \
+            TEST_ABORT("decoded invalid utf8 string");                   \
+    } while (0)
+
+    /* Invalid bytes */
+    C_TEST_INVALID_UTF8("\x80");
+    C_TEST_INVALID_UTF8("\x61\xff");
+
+    /* Truncated sequences */
+    C_TEST_INVALID_UTF8("\xe2");
+    C_TEST_INVALID_UTF8("\x61\xe2");
+    C_TEST_INVALID_UTF8("\x61\xe2\x82");
+
+    /* Invalid sequences */
+    C_TEST_INVALID_UTF8("\xe0\x1f\x80");
+    C_TEST_INVALID_UTF8("\x61\xe0\x1f\x80");
+    C_TEST_INVALID_UTF8("\x61\xe0\xa0\xd0");
+
+#undef C_TEST_INVALID_UTF8
+}
+
 int
 main(int argc, char **argv) {
     struct test_suite *suite;
@@ -91,6 +141,7 @@ main(int argc, char **argv) {
     test_suite_start(suite);
 
     TEST_RUN(suite, codepoint_read);
+    TEST_RUN(suite, utf8_decode);
 
     test_suite_print_results_and_exit(suite);
 }

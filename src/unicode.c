@@ -16,8 +16,37 @@
 
 #include "internal.h"
 
+size_t
+c_ustring_length(const uint32_t *ustring) {
+    const uint32_t *ptr;
+    size_t length;
+
+    length = 0;
+
+    ptr = ustring;
+    while (*ptr != 0) {
+        length++;
+        ptr++;
+    }
+
+    return length;
+}
+
 bool
-c_utf8_is_valid_codepoint(uint32_t codepoint) {
+c_ustring_equal(const uint32_t *ustring1, const uint32_t *ustring2) {
+    size_t length1, length2;
+
+    length1 = c_ustring_length(ustring1);
+    length2 = c_ustring_length(ustring2);
+
+    if (length1 != length2)
+        return false;
+
+    return memcmp(ustring1, ustring2, length1 * 4) == 0;
+}
+
+bool
+c_codepoint_is_valid(uint32_t codepoint) {
     return (codepoint <= 0x10ffff)
         && !(codepoint >= 0xd800 && codepoint <= 0xdfff); /* surrogate pairs */
 }
@@ -126,7 +155,7 @@ c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
         goto invalid_byte_sequence;
     }
 
-    if (!c_utf8_is_valid_codepoint(codepoint)) {
+    if (!c_codepoint_is_valid(codepoint)) {
         c_set_error("invalid codepoint U+%X", codepoint);
         return -1;
     }
@@ -157,4 +186,54 @@ c_utf8_is_valid_string(const char *string) {
     }
 
     return true;
+}
+
+uint32_t *
+c_utf8_decode(const char *string) {
+    uint32_t *codepoints;
+    size_t nb_codepoints, codepoints_sz, length;
+    const char *ptr;
+
+    codepoints = NULL;
+    nb_codepoints = 0;
+    codepoints_sz = 0;
+
+    ptr = string;
+    length = strlen(string);
+
+    codepoints_sz = length + 1;
+    codepoints = c_calloc(codepoints_sz, sizeof(uint32_t));
+    if (!codepoints)
+        return NULL;
+
+    while (*ptr != '\0') {
+        uint32_t codepoint;
+        size_t nb_bytes;
+
+        if (c_utf8_read_codepoint(ptr, &codepoint, &nb_bytes) == -1)
+            goto error;
+
+        if (nb_codepoints >= codepoints_sz - 1) {
+            uint32_t *ncodepoints;
+
+            codepoints_sz *= 2;
+            ncodepoints = c_realloc(codepoints,
+                                    codepoints_sz * sizeof(uint32_t));
+            if (!ncodepoints)
+                goto error;
+
+            codepoints = ncodepoints;
+        }
+
+        codepoints[nb_codepoints++] = codepoint;
+
+        ptr += nb_bytes;
+    }
+
+    codepoints[nb_codepoints] = 0;
+    return codepoints;
+
+error:
+    c_free(codepoints);
+    return NULL;
 }

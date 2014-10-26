@@ -9,5 +9,5 @@ session.vim
 /tests/buffer
 /tests/hash-table
 /tests/strings
-/tests/utf8
+/tests/unicode
 /tests/vector

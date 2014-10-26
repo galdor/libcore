@@ -1,6 +1,32 @@
 
 # unicode
 
+In libcore, an "ustring" is an array of unicode codepoints. The last codepoint
+in an ustring is always the `U+0000` codepoint.
+
+## `c_codepoint_is_valid`
+~~~ {.c}
+    bool c_codepoint_is_valid(uint32_t codepoint);
+~~~
+
+Returns a boolean indicating whether a unicode codepoint is valid or not.
+
+## `c_ustring_length`
+~~~ {.c}
+    size_t c_ustring_length(const uint32_t *ustring);
+~~~
+
+Returns the length of an ustring, i.e. the number of codepoints it contains.
+The final `U+0000` codepoint is not included.
+
+## `c_ustring_equal`
+~~~ {.c}
+    bool c_ustring_equal(const uint32_t *, const uint32_t *);
+~~~
+
+Returns `true` if two ustrings are equals, i.e. if all their codepoints are
+the same, or `false` else.
+
 ## `c_utf8_read_codepoint`
 ~~~ {.c}
     int c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
@@ -10,13 +36,6 @@
 Reads a unicode codepoint from a string and stores it in `pcodepoint`. If
 `plength` is not null, use it to return the length of the UTF-8 sequence read.
 
-## `c_utf8_is_valid_codepoint`
-~~~ {.c}
-    bool c_utf8_is_valid_codepoint(uint32_t codepoint);
-~~~
-
-Returns a boolean indicating whether a unicode codepoint is valid or not.
-
 ## `c_utf8_is_valid_string`
 ~~~ {.c}
     bool c_utf8_is_valid_string(const char *string);
@@ -24,3 +43,12 @@ Returns a boolean indicating whether a unicode codepoint is valid or not.
 
 Returns a boolean indicating whether a character string is a valid UTF-8
 string.
+
+## `c_utf8_decode`
+~~~ {.c}
+    uint32_t *c_utf8_decode(const char *string);
+~~~
+
+Decodes an UTF-8 null-terminated string and returns an ustring. codepoints.
+Returns a null pointer if a decoding error occurs or if memory cannot be
+allocated.
