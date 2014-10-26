@@ -25,62 +25,105 @@ c_utf8_is_valid_codepoint(uint32_t codepoint) {
 int
 c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
                       size_t *plength) {
+    static const uint8_t ranges[256] = {
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 00 - 0f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 10 - 1f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 20 - 2f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 30 - 3f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 40 - 4f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 50 - 5f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 60 - 6f */
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, /* 70 - 7f */
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 80 - 8f */
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 90 - 9f */
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* a0 - af */
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* b0 - bf */
+        0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* c0 - cf */
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, /* d0 - df */
+        3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 6, /* e0 - ef */
+        7, 8, 8, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* f0 - ff */
+    };
+
     uint32_t codepoint;
     const unsigned char *ptr;
     size_t length;
+    int range;
 
     ptr = (const unsigned char *)string;
 
     /* Reference: Unicode 7.0 - Table 3.7 */
 
-    if (ptr[0] <= 0x7f) {
+    range = ranges[*ptr];
+    switch (range) {
+    case 1:
         /* 0xxxxxxx */
         length = 1;
+
         codepoint = (uint32_t)ptr[0];
-    } else if ((ptr[0] >= 0xc2) && (ptr[0] <= 0xdf)
-            && (ptr[1] >= 0x80) && (ptr[1] <= 0xbf)) {
+        break;
+
+    case 2:
         /* 110yyyyy 10xxxxxx */
         length = 2;
+
+        if (ptr[1] < 0x80 || ptr[1] > 0xbf)
+            goto invalid_byte_sequence;
+
         codepoint  = (((uint32_t)ptr[0] & 0x1f) << 6);
         codepoint |=  ((uint32_t)ptr[1] & 0x3f);
-    } else if (((ptr[0] == 0xe0)
-             && (ptr[1] >= 0xa0) && (ptr[1] <= 0xbf)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf))
-            || ((ptr[0] >= 0xe1) && (ptr[0] <= 0xec)
-             && (ptr[1] >= 0x80) && (ptr[1] <= 0xbf)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf))
-            || ((ptr[0] == 0xed)
-             && (ptr[1] >= 0x80) && (ptr[1] <= 0xef)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf))
-            || ((ptr[0] >= 0xee) && (ptr[0] <= 0xef)
-             && (ptr[1] >= 0x80) && (ptr[1] <= 0xbf)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf))) {
+        break;
+
+    case 3:
+    case 4:
+    case 5:
+    case 6:
         /* 1110zzzz 10yyyyyy 10xxxxxx */
         length = 3;
+
+        if (range == 3) {
+            if (ptr[1] < 0xa0 || ptr[1] > 0xbf)
+                goto invalid_byte_sequence;
+        } else if (range == 5) {
+            if (ptr[1] < 0x80 || ptr[1] > 0x9f)
+                goto invalid_byte_sequence;
+        }
+
+        if (ptr[2] < 0x80 || ptr[2] > 0xbf)
+            goto invalid_byte_sequence;
+
         codepoint  = (((uint32_t)ptr[0] & 0x0f) << 12);
         codepoint |= (((uint32_t)ptr[1] & 0x3f) <<  6);
         codepoint |=  ((uint32_t)ptr[2] & 0x3f);
-    } else if (((ptr[0] == 0xf0)
-             && (ptr[1] >= 0x90) && (ptr[1] <= 0xbf)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf)
-             && (ptr[3] >= 0x80) && (ptr[3] <= 0xbf))
-            || ((ptr[0] >= 0xf1) && (ptr[0] <= 0xf3)
-             && (ptr[1] >= 0x80) && (ptr[1] <= 0xbf)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf)
-             && (ptr[3] >= 0x80) && (ptr[3] <= 0xbf))
-            || ((ptr[0] == 0xf4)
-             && (ptr[1] >= 0x80) && (ptr[1] <= 0x8f)
-             && (ptr[2] >= 0x80) && (ptr[2] <= 0xbf)
-             && (ptr[3] >= 0x80) && (ptr[3] <= 0xbf))) {
+        break;
+
+    case 7:
+    case 8:
+    case 9:
         /* 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx */
         length = 4;
+
+        if (range == 7) {
+            if (ptr[1] < 0x90 || ptr[1] > 0xbf)
+                goto invalid_byte_sequence;
+        } else if (range == 9) {
+            if (ptr[1] < 0x80 || ptr[1] > 0x8f)
+                goto invalid_byte_sequence;
+        }
+
+        if (ptr[2] < 0x80 || ptr[2] > 0xbf)
+            goto invalid_byte_sequence;
+
+        if (ptr[3] < 0x80 || ptr[3] > 0xbf)
+            goto invalid_byte_sequence;
+
         codepoint  = (((uint32_t)ptr[0] & 0x07) << 18);
         codepoint |= (((uint32_t)ptr[1] & 0x3f) << 12);
         codepoint |= (((uint32_t)ptr[2] & 0x3f) <<  6);
         codepoint |=  ((uint32_t)ptr[3] & 0x3f);
-    } else {
-        c_set_error("invalid byte sequence");
-        return -1;
+        break;
+
+    default:
+        goto invalid_byte_sequence;
     }
 
     if (!c_utf8_is_valid_codepoint(codepoint)) {
@@ -92,6 +135,10 @@ c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
     if (plength)
         *plength = length;
     return 0;
+
+invalid_byte_sequence:
+    c_set_error("invalid byte sequence");
+    return -1;
 }
 
 bool
