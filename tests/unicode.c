@@ -124,9 +124,11 @@ TEST(utf8_decode) {
     C_TEST_INVALID_UTF8("\x61\xe2\x82");
 
     /* Invalid sequences */
-    C_TEST_INVALID_UTF8("\xe0\x1f\x80");
-    C_TEST_INVALID_UTF8("\x61\xe0\x1f\x80");
+    C_TEST_INVALID_UTF8("\xe0\x90\x80");
+    C_TEST_INVALID_UTF8("\xe1\x70\x80");
+    C_TEST_INVALID_UTF8("\x61\xe0\x1f\x70");
     C_TEST_INVALID_UTF8("\x61\xe0\xa0\xd0");
+    C_TEST_INVALID_UTF8("\xf1\xe0\x80\x80");
 
 #undef C_TEST_INVALID_UTF8
 }

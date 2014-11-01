@@ -112,6 +112,9 @@ c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
         if (range == 3) {
             if (ptr[1] < 0xa0 || ptr[1] > 0xbf)
                 goto invalid_byte_sequence;
+        } else if (range == 4) {
+            if (ptr[1] < 0x80 || ptr[1] > 0xbf)
+                goto invalid_byte_sequence;
         } else if (range == 5) {
             if (ptr[1] < 0x80 || ptr[1] > 0x9f)
                 goto invalid_byte_sequence;
@@ -133,6 +136,9 @@ c_utf8_read_codepoint(const char *string, uint32_t *pcodepoint,
 
         if (range == 7) {
             if (ptr[1] < 0x90 || ptr[1] > 0xbf)
+                goto invalid_byte_sequence;
+        } else if (range == 8) {
+            if (ptr[1] < 0x80 || ptr[1] > 0xbf)
                 goto invalid_byte_sequence;
         } else if (range == 9) {
             if (ptr[1] < 0x80 || ptr[1] > 0x8f)
