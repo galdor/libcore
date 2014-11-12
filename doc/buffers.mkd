@@ -217,7 +217,8 @@ modified.
 ~~~
 
 `c_buffer_extract_string` works the same way that `c_buffer_extract`, but
-ensures that the returned data end with a null byte.
+ensures that the returned data end with a null byte. The length returned in
+`plen` does not include the final null byte.
 
 ## `c_buffer_dup`
 ~~~ {.c}

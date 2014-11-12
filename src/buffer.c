@@ -342,8 +342,20 @@ c_buffer_extract(struct c_buffer *buf, size_t *plen) {
 
 char *
 c_buffer_extract_string(struct c_buffer *buf, size_t *plen) {
+    char *string;
+    size_t len;
+
     c_buffer_add(buf, "\0", 1);
-    return c_buffer_extract(buf, plen);
+
+    string = c_buffer_extract(buf, &len);
+    if (!string) {
+        c_buffer_remove(buf, 1);
+        return NULL;
+    }
+
+    if (plen)
+        *plen = len - 1;
+    return string;
 }
 
 void *
