@@ -175,14 +175,16 @@ not actually modify the content of the buffer and has a complexity of `Ο(1)`.
     size_t c_buffer_remove_before(struct c_buffer *buf, size_t offset, size_t n);
 ~~~
 
-Removes up to `n` bytes before offset `offset` in `buf`.
+Removes up to `n` bytes before offset `offset` in `buf`. Returns the number of
+bytes actually removed.
 
 ## `c_buffer_remove_after`
 ~~~ {.c}
     size_t c_buffer_remove_after(struct c_buffer *buf, size_t offset, size_t n);
 ~~~
 
-Removes up to `n` bytes after offset `offset` in `buf`.
+Removes up to `n` bytes after offset `offset` in `buf`. Returns the number of
+bytes actually removed.
 
 ## `c_buffer_remove`
 ~~~ {.c}
@@ -191,6 +193,7 @@ Removes up to `n` bytes after offset `offset` in `buf`.
 
 Removes up to `n` bytes at the end of `buf`. Note that this function does not
 actually modify the content of the buffer and has a complexity of `Ο(1)`.
+Returns the number of bytes actually removed.
 
 ## `c_buffer_extract`
 ~~~ {.c}
