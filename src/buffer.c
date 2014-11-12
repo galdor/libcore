@@ -413,6 +413,7 @@ c_buffer_write(struct c_buffer *buf, int fd) {
     ret = write(fd, buf->data + buf->skip, buf->len);
     if (ret > 0) {
         buf->len -= (size_t)ret;
+        buf->skip += (size_t)ret;
 
         if (buf->len == 0)
             buf->skip = 0;
