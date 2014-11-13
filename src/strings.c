@@ -62,7 +62,7 @@ c_vasprintf(char **pstr, const char *fmt, va_list ap) {
         if ((size_t)ret < sz) {
             /* Success */
             *pstr = str;
-            return 0;
+            return ret;
         }
 
         sz = (size_t)ret + 1;

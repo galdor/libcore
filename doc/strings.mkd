@@ -27,8 +27,8 @@ If memory allocation fails, the function returns a null pointer.
 
 Formats a character string in a newly allocated buffer using a `printf`-like
 format string and a variable argument list, and store a pointer to the new
-string in `pstring`. Returns 0 on success, and -1 if memory allocation or
-string formatting fails.
+string in `pstring`. Returns the number of characters written on success, and
+-1 if memory allocation or string formatting fails.
 
 ## `c_asprintf`
 
@@ -38,8 +38,8 @@ string formatting fails.
 
 Formats a character string in a newly allocated buffer using a `printf`-like
 format string and a list of arguments, and store a pointer to the new string
-in `pstring`. Returns 0 on success, and -1 if memory allocation or string
-formatting fails.
+in `pstring`. Returns the number of character written on success, and -1 if
+memory allocation or string formatting fails.
 
 ## `c_strlcpy`
 

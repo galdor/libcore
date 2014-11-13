@@ -44,24 +44,25 @@ TEST(strndup) {
 }
 
 TEST(asprintf) {
-#define C_TEST_ASPRINTF(expected_string_, fmt_, ...)    \
-    do {                                                \
-        char *string;                                   \
-        int ret;                                        \
-                                                        \
-        ret = c_asprintf(&string, fmt_, ##__VA_ARGS__); \
-        TEST_INT_EQ(ret, 0);                            \
-        TEST_STRING_EQ(string, expected_string_);       \
-        c_free(string);                                 \
+#define C_TEST_ASPRINTF(expected_string_, expected_length_, fmt_, ...) \
+    do {                                                               \
+        char *string;                                                  \
+        int ret;                                                       \
+                                                                       \
+        ret = c_asprintf(&string, fmt_, ##__VA_ARGS__);                \
+        TEST_INT_EQ(ret, expected_length_);                            \
+        TEST_STRING_EQ(string, expected_string_);                      \
+        c_free(string);                                                \
     } while (0)
 
-    C_TEST_ASPRINTF("", "");
-    C_TEST_ASPRINTF("a", "a");
-    C_TEST_ASPRINTF("foo", "foo");
-    C_TEST_ASPRINTF("1", "%d", 1);
-    C_TEST_ASPRINTF("42", "%d", 42);
-    C_TEST_ASPRINTF("9999", "%d", 9999);
-    C_TEST_ASPRINTF("", "%c", 0);
+    C_TEST_ASPRINTF("", 0, "");
+    C_TEST_ASPRINTF("a", 1, "a");
+    C_TEST_ASPRINTF("foo", 3, "foo");
+    C_TEST_ASPRINTF("1", 1, "%d", 1);
+    C_TEST_ASPRINTF("42", 2, "%d", 42);
+    C_TEST_ASPRINTF("9999", 4, "%d", 9999);
+    C_TEST_ASPRINTF("a", 1, "%c", 'a');
+    C_TEST_ASPRINTF("", 1, "%c", 0);
 
 #undef C_TEST_ASPRINTF
 }
