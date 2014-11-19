@@ -55,7 +55,11 @@ TEST(asprintf) {
         c_free(string);                                                \
     } while (0)
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-zero-length"
     C_TEST_ASPRINTF("", 0, "");
+#pragma GCC diagnostic pop
+
     C_TEST_ASPRINTF("a", 1, "a");
     C_TEST_ASPRINTF("foo", 3, "foo");
     C_TEST_ASPRINTF("1", 1, "%d", 1);
