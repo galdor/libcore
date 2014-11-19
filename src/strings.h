@@ -17,6 +17,9 @@
 #ifndef LIBCORE_STRINGS_H
 #define LIBCORE_STRINGS_H
 
+#include <stdarg.h>
+#include <stdlib.h>
+
 char *c_strdup(const char *);
 char *c_strndup(const char *, size_t);
 
