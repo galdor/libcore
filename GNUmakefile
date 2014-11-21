@@ -107,6 +107,6 @@ uninstall:
 	$(RM) -r $(incdir)/core
 
 tags:
-	ctags -o .tags -a $(wildcard src/*.[hc])
+	ctags -o .tags $(wildcard src/*.[hc])
 
 .PHONY: all lib tests doc clean coverage install uninstall tags
