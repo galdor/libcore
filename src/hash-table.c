@@ -326,6 +326,41 @@ c_hash_table_iterator_set_value(struct c_hash_table_iterator *it, void *value) {
     entry->value = value;
 }
 
+int
+c_hash_table_keys(struct c_hash_table *table, void ***pkeys, size_t *p_nb_keys) {
+    struct c_hash_table_iterator *it;
+    size_t nb_keys;
+    void **keys, *key;
+    size_t idx;
+
+    nb_keys = table->nb_entries;
+    if (nb_keys == 0) {
+        *pkeys = NULL;
+        *p_nb_keys = 0;
+        return 0;
+    }
+
+    keys = c_calloc(nb_keys, sizeof(void *));
+    if (!keys)
+        return -1;
+
+    it = c_hash_table_iterate(table);
+    if (!it) {
+        c_free(keys);
+        return -1;
+    }
+
+    idx = 0;
+    while (c_hash_table_iterator_next(it, &key, NULL) == 1)
+        keys[idx++] = key;
+
+    c_hash_table_iterator_delete(it);
+
+    *pkeys = keys;
+    *p_nb_keys = nb_keys;
+    return 0;
+}
+
 uint32_t
 c_hash_int32(const void *key) {
     int32_t integer;

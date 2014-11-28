@@ -49,6 +49,8 @@ int c_hash_table_iterator_next(struct c_hash_table_iterator *,
                                void **, void **);
 void c_hash_table_iterator_set_value(struct c_hash_table_iterator *, void *);
 
+int c_hash_table_keys(struct c_hash_table *, void ***, size_t *);
+
 uint32_t c_hash_int32(const void *);
 bool c_equal_int32(const void *, const void *);
 

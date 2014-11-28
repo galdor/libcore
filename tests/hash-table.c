@@ -288,6 +288,49 @@ TEST(iterate_remove) {
     c_hash_table_delete(table);
 }
 
+TEST(keys) {
+    struct c_hash_table *table;
+
+#define C_TEST_HASH_TABLE_KEYS(nb_keys_, ...) \
+    do {                                                                 \
+        const char *expected_keys[] = {__VA_ARGS__};                     \
+        const char **keys;                                               \
+        size_t nb_keys, nb_expected_keys;                                \
+                                                                         \
+        nb_expected_keys = sizeof(expected_keys) / sizeof(const char *); \
+                                                                         \
+        TEST_UINT_EQ(nb_expected_keys, nb_keys_);                        \
+                                                                         \
+        c_hash_table_keys(table, (void ***)&keys, &nb_keys);             \
+        TEST_UINT_EQ(nb_keys, nb_keys_);                                 \
+                                                                         \
+        qsort(keys, nb_keys, sizeof(const char *),                       \
+              (int (*)(const void *, const void *))strcmp);              \
+        for (size_t i = 0; i < nb_keys; i++)                             \
+            TEST_STRING_EQ(keys[i], expected_keys[i]);                   \
+                                                                         \
+        c_free(keys);                                                    \
+    } while (0)
+
+    table = c_hash_table_new(c_hash_string, c_equal_string);
+
+    C_TEST_HASH_TABLE_KEYS(0);
+
+    c_hash_table_insert(table, "a", "abc");
+    C_TEST_HASH_TABLE_KEYS(1, "a");
+
+    c_hash_table_insert(table, "b", "bcd");
+    c_hash_table_insert(table, "c", "cde");
+    C_TEST_HASH_TABLE_KEYS(3, "a", "b", "c");
+
+    c_hash_table_clear(table);
+    C_TEST_HASH_TABLE_KEYS(0);
+
+#undef C_TEST_HASH_TABLE_KEYS
+
+    c_hash_table_delete(table);
+}
+
 int
 main(int argc, char **argv) {
     struct test_suite *suite;
@@ -306,6 +349,7 @@ main(int argc, char **argv) {
     TEST_RUN(suite, iterate);
     TEST_RUN(suite, iterate_set_value);
     TEST_RUN(suite, iterate_remove);
+    TEST_RUN(suite, keys);
 
     test_suite_print_results_and_exit(suite);
 }

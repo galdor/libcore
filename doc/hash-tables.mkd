@@ -212,6 +212,17 @@ Modify the value of the hash table entry an iterator is currently pointing on.
 
 If the iterator is not currently pointing on an entry, no action is performed.
 
+## `c_hash_table_keys`
+~~~ {.c}
+    int c_hash_table_keys(struct c_hash_table *table,
+                          void ***pkeys, size_t *p_nb_keys);
+~~~
+
+Allocates an array containing the key of all entries in a hash table and
+returns it in `pkeys`. The number of keys in the array is stored in
+`p_nb_keys`. If the hash table is empty, `pkeys` is set to `NULL` and
+`p_nb_keys` to 0. Returns 0 on success, or -1 if memory allocation failed.
+
 ## `c_hash_int32`
 ~~~ {.c}
     uint32_t c_hash_int32(const void *key);
