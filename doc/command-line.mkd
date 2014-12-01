@@ -1,0 +1,186 @@
+
+# Command line
+
+The command line module offers a simple way to handle command line options and
+arguments. This module enforces the following rules:
+
+- Command line arguments are either options names, option values, separators
+  or arguments.
+- An option name is either short, a single character preceded by a dash
+  (`U+002D`) character, or long, in which case it contains more than one
+  character preceded by two dash characters.
+- Options using long names cannot be provided with the `--name=value` syntax,
+  and must instead use two separate arguments, as in `--name value`.
+- A separator argument, either one or two dash characters, can be used to
+  separate options and arguments. These separators are ignored.
+- A single set of trailing arguments can be used after all other arguments. It
+  must contain at least one argument.
+- The command line handler automatically defines an option with the names `h`
+  and `help`. If this flag is set, `c_command_line_parse` will display the
+  usage string on `stdout` and exits with a return code of 0.
+- Generally speaking, all strings passed to functions of this modules are
+  copied in the command line handler, and are freed by
+  `c_command_line_delete`.
+
+## `c_command_line_new`
+~~~ {.c}
+    struct c_command_line *c_command_line_new(void);
+~~~
+
+Creates and returns a new command line handler. If memory allocation fails, a
+null pointer is returned.
+
+## `c_command_line_delete`
+~~~ {.c}
+    void c_command_line_delete(struct c_command_line *cmdline);
+~~~
+
+Deletes a command line handler.
+
+## `c_command_line_set_program_description`
+~~~ {.c}
+    int c_command_line_set_program_description(struct c_command_line *cmdline,
+                                               const char *description);
+~~~
+
+Sets the string used as a description of the program in the usage string.
+Returns 0 on success or -1 if memory allocation fails.
+
+## `c_command_line_add_flag`
+~~~ {.c}
+    int c_command_line_add_flag(struct c_command_line *cmdline,
+                                const char *short_name, const char *long_name,
+                                const char *description);
+~~~
+
+Add a new boolean option, or flag, to a command line handler. The short name
+must either be null or contain a single letter. The long name must either be
+null or contain more than one letter. The short and long names cannot be both
+null. The description string is used in the usage string. Returns 0 on
+success or -1 if memory allocation fails.
+
+## `c_command_line_add_option`
+~~~ {.c}
+    int c_command_line_add_option(struct c_command_line *cmdline,
+                                  const char *short_name, const char *long_name,
+                                  const char *description, const char *value_name,
+                                  const char *default_value);
+~~~
+
+Add a new option to a command line handler. The short and long names are
+subject to the same restrictions described for `c_command_line_add_flag`. The
+description string is used in the usage string. The `value_name` argument is
+used as placeholder in the usage string. The default value can be null.
+Returns 0 on success or -1 if memory allocation fails.
+
+## `c_command_line_add_argument`
+~~~ {.c}
+    int c_command_line_add_argument(struct c_command_line *cmdline,
+                                    const char *description,
+                                    const char *value_name);
+~~~
+
+Add a new argument to a command line handler. The description string is used
+in the usage string. The `value_name` argument is used as placeholder in the
+usage string. Returns 0 on success or -1 if memory allocation fails or if
+trailing arguments were defined.
+
+## `c_command_line_add_trailing_arguments`
+~~~ {.c}
+    int c_command_line_add_trailing_arguments(struct c_command_line *cmdline,
+                                              const char *description,
+                                              const char *value_name);
+~~~
+
+Add a new set of trailing arguments to a command line handler. A command line
+handler can only contains a single trailing argument, and it must be the last
+one. The description string is used in the usage string. The `value_name`
+argument is used as placeholder in the usage string. Returns 0 on success or
+-1 if memory allocation fails or if trailing arguments were already defined.
+
+## `c_command_line_parse`
+~~~ {.c}
+    int c_command_line_parse(struct c_command_line *cmdline,
+                             int argc, char **argv);
+~~~
+
+Parses an array of arguments and fill a command line handler. The argument
+array must contain the program name as first argument (this is the case for
+the usual `argc` and `argv` arguments of the `main` function).
+
+Returns 0 on success or -1 if parsing or memory allocation failed. If the
+`help` option is set, the function does not return.
+
+## `c_command_line_usage_string`
+~~~ {.c}
+    char *c_command_line_usage_string(const struct c_command_line *cmdline);
+~~~
+
+Allocates, formats and returns a usage string describing the options and
+arguments of a command line handler.
+
+## `c_command_line_usage_print`
+~~~ {.c}
+    int c_command_line_usage_print(const struct c_command_line *cmdline,
+                                   FILE *file);
+~~~
+
+Formats and prints a usage string to a file. Returns 0 on success or -1 if
+memory allocation fails.
+
+## `c_command_line_is_option_set`
+~~~ {.c}
+    bool c_command_line_is_option_set(struct c_command_line *cmdline,
+                                      const char *name);
+~~~
+
+Returns `true` if an option was set, or `false` else. The name can either be a
+short or a long name. If there is no option associated with the name, `false`
+is returned.
+
+## `c_command_line_option_value`
+~~~ {.c}
+    const char *c_command_line_option_value(struct c_command_line *cmdline,
+                                            const char *name);
+~~~
+
+Returns the value associated with an option. If the option was not set,
+the function returns the default value of the option. If there is no option
+associated with the name or if the option is a flag, a null pointer is
+returned. Note that the default value can be a null pointer.
+
+## `c_command_line_argument_value`
+~~~ {.c}
+    const char *c_command_line_argument_value(struct c_command_line *cmdline,
+                                              size_t idx);
+~~~
+
+Returns the value of the `idx`^th^ argument. The first argument has the index 0.
+The result is undefined if `idx` is greater or equal to the number of trailing
+arguments.
+
+## `c_command_line_nb_trailing_arguments`
+~~~ {.c}
+    size_t c_command_line_nb_trailing_arguments(struct c_command_line *cmdline);
+~~~
+
+Returns the number of trailing arguments. This number is always greater or
+equal to 1.
+
+## `c_command_line_trailing_argument_values`
+~~~ {.c}
+    const char **c_command_line_trailing_argument_values(struct c_command_line *cmdline);
+~~~
+
+Returns and array containing all trailing arguments. The array does not have
+to be freed by the caller.
+
+## `c_command_line_trailing_argument_value`
+~~~ {.c}
+    const char *c_command_line_trailing_argument_value(struct c_command_line *cmdline,
+                                                       size_t idx) {
+~~~
+
+Returns the `idx`^th^ trailing argument. The first trailing arguments has the
+index 0. The result is undefined if `idx` is greater or equal to the number of
+trailing arguments.

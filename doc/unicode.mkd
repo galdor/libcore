@@ -1,5 +1,5 @@
 
-# unicode
+# Unicode
 
 In libcore, an "ustring" is an array of unicode codepoints. The last codepoint
 in an ustring is always the `U+0000` codepoint.

@@ -58,16 +58,27 @@ $(tests_BIN): CFLAGS+= -Isrc
 $(tests_BIN): LDFLAGS+= -L.
 $(tests_BIN): LDLIBS+= -lutest -lcore
 
+# Target: examples
+examples_SRC= $(wildcard examples/*.c)
+examples_OBJ= $(subst .c,.o,$(examples_SRC))
+examples_BIN= $(subst .o,,$(examples_OBJ))
+
+$(examples_BIN): CFLAGS+= -Isrc
+$(examples_BIN): LDFLAGS+= -L.
+$(examples_BIN): LDLIBS+= -lutest -lcore
+
 # Target: doc
 doc_SRC= $(wildcard doc/*.mkd)
 doc_HTML= $(subst .mkd,.html,$(doc_SRC))
 
 # Rules
-all: lib tests doc
+all: lib tests examples doc
 
 lib: $(libcore_LIB)
 
 tests: lib $(tests_BIN)
+
+examples: lib $(examples_BIN)
 
 doc: $(doc_HTML)
 
@@ -78,12 +89,17 @@ $(tests_OBJ): $(libcore_LIB) $(libcore_INC)
 tests/%: tests/%.o
 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
+$(examples_OBJ): $(libcore_LIB) $(libcore_INC)
+examples/%: examples/%.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
 doc/%.html: doc/%.mkd
 	pandoc $(PANDOC_OPTS) -t html5 -o $@ $<
 
 clean:
 	$(RM) $(libcore_LIB) $(wildcard src/*.o)
 	$(RM) $(tests_BIN) $(wildcard tests/*.o)
+	$(RM) $(examples_BIN) $(wildcard examples/*.o)
 	$(RM) $(wildcard **/*.gc??)
 	$(RM) -r coverage
 	$(RM) -r $(doc_HTML)
@@ -109,4 +125,4 @@ uninstall:
 tags:
 	ctags -o .tags $(wildcard src/*.[hc])
 
-.PHONY: all lib tests doc clean coverage install uninstall tags
+.PHONY: all lib tests examples doc clean coverage install uninstall tags

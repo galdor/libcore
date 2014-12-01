@@ -6,7 +6,11 @@ session.vim
 
 /doc/*.html
 
+/examples/command-line
+/examples/command-line-minimal
+
 /tests/buffer
+/tests/command-line
 /tests/hash-table
 /tests/strings
 /tests/unicode

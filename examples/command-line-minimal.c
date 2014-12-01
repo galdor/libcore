@@ -14,24 +14,20 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_INTERNAL_H
-#define LIBCORE_INTERNAL_H
+#include "internal.h"
 
-#include <errno.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+int
+main(int argc, char **argv) {
+    struct c_command_line *cmdline;
 
-#include "memory.h"
-#include "errors.h"
-#include "strings.h"
-#include "buffer.h"
-#include "vector.h"
-#include "hash-table.h"
-#include "unicode.h"
-#include "command-line.h"
+    cmdline = c_command_line_new();
 
-#endif
+    if (c_command_line_parse(cmdline, argc, argv) == -1) {
+        fprintf(stderr, "%s\n", c_get_error());
+        return 1;
+    }
+
+    c_command_line_delete(cmdline);
+    return 0;
+}
+

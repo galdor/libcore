@@ -24,5 +24,6 @@
 #include <core/vector.h>
 #include <core/hash-table.h>
 #include <core/unicode.h>
+#include <core/command-line.h>
 
 #endif
