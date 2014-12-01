@@ -1,5 +1,7 @@
 # libcore
 
+[![Build Status](https://secure.travis-ci.org/galdor/libcore.png)](http://travis-ci.org/galdor/libcore)
+
 ## Description
 
 `libcore` is a library providing utility functions in C.
