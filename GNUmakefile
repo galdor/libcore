@@ -65,7 +65,7 @@ examples_BIN= $(subst .o,,$(examples_OBJ))
 
 $(examples_BIN): CFLAGS+= -Isrc
 $(examples_BIN): LDFLAGS+= -L.
-$(examples_BIN): LDLIBS+= -lutest -lcore
+$(examples_BIN): LDLIBS+= -lcore
 
 # Target: doc
 doc_SRC= $(wildcard doc/*.mkd)
