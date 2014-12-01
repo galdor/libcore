@@ -149,8 +149,8 @@ c_buffer_insert(struct c_buffer *buf, size_t offset, const void *data,
         if (nsz < 32)
             nsz = 32;
 
-        buf->sz = sz;
-        buf->data = c_malloc(sz);
+        buf->sz = nsz;
+        buf->data = c_malloc(buf->sz);
         if (!buf->data)
             return -1;
     } else if (c_buffer_free_space(buf) < sz) {

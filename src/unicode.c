@@ -202,7 +202,6 @@ c_utf8_decode(const char *string) {
 
     codepoints = NULL;
     nb_codepoints = 0;
-    codepoints_sz = 0;
 
     ptr = string;
     length = strlen(string);
