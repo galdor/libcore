@@ -169,6 +169,8 @@ If not, it returns 0.
 
 Removes up to `n` bytes at the beginning of `buf`. Note that this function does
 not actually modify the content of the buffer and has a complexity of `Ο(1)`.
+Calling `c_buffer_skip` does not modify the pointer returned by
+`c_buffer_data`.
 
 ## `c_buffer_remove_before`
 ~~~ {.c}
