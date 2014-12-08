@@ -176,8 +176,8 @@ invalid_byte_sequence:
     return -1;
 }
 
-bool
-c_utf8_is_valid_string(const char *string) {
+int
+c_utf8_validate(const char *string) {
     const char *ptr;
 
     ptr = string;
@@ -186,12 +186,12 @@ c_utf8_is_valid_string(const char *string) {
         size_t length;
 
         if (c_utf8_read_codepoint(ptr, &codepoint, &length) == -1)
-            return false;
+            return -1;
 
         ptr += length;
     }
 
-    return true;
+    return 0;
 }
 
 uint32_t *

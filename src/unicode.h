@@ -27,7 +27,7 @@ bool c_ustring_equal(const uint32_t *, const uint32_t *);
 /* UTF-8 */
 int c_utf8_read_codepoint(const char *, uint32_t *, size_t *);
 
-bool c_utf8_is_valid_string(const char *);
+int c_utf8_validate(const char *);
 
 uint32_t *c_utf8_decode(const char *);
 
