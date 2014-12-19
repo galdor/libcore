@@ -6,15 +6,15 @@
     struct c_buffer *c_buffer_new(void);
 ~~~~
 
-Creates and returns a new empty buffer.
+Creates and returns a new empty buffer. Returns `NULL` if memory allocation
+fails.
 
 ## `c_buffer_delete`
 ~~~ {.c}
     void c_buffer_delete(struct c_buffer *buf);
 ~~~
 
-Frees `buf` and all data associated to it. If `buf` is null or if the buffer is
-not initialized, no action is performed.
+Frees `buf` and all data associated with it.
 
 ## `c_buffer_data`
 ~~~ {.c}
@@ -51,7 +51,7 @@ The size of the buffer is greater or equal to its length.
     void c_buffer_reset(struct c_buffer *buf);
 ~~~
 
-Clears all data stored in `buf` and release the associated memory.
+Clears all data stored in `buf` and releases the associated memory.
 
 ## `c_buffer_clear`
 ~~~ {.c}
@@ -91,14 +91,14 @@ returns 0.
 ~~~
 
 Makes sure that `buf` has at least `sz` bytes of free contiguous memory at its
-end, then return a pointer to the first byte after the end of `buf`.
+end then returns a pointer to the first byte after the end of `buf`.
 
 If memory allocation fails, `c_buffer_reserve` returns `NULL`.
 
 ## `c_buffer_insert`
 ~~~ {.c}
     int c_buffer_insert(struct c_buffer *buf, size_t offset, const char *data,
-                         size_t sz);
+                        size_t sz);
 ~~~
 
 Copies `sz` bytes referenced by `data` at the offset `offset` of `buf`. If
@@ -115,9 +115,7 @@ it returns 0.
 ~~~
 
 Copies `sz` bytes referenced by `data` to the end of `buf`.
-
-If a memory allocation function fails, `c_buffer_add` returns -1. If not,
-it returns 0.
+Returns 0 on success, or -1 if memory allocation fails.
 
 ## `c_buffer_add_buffer`
 ~~~ {.c}
@@ -125,9 +123,7 @@ it returns 0.
 ~~~
 
 Copies the content of the `src` buffer to `buf`.
-
-If a memory allocation function fails, `c_buffer_add_buffer` returns -1.
-If not, it returns 0.
+Returns 0 on success, or -1 if memory allocation fails.
 
 ## `c_buffer_add_string`
 ~~~ {.c}
@@ -136,9 +132,7 @@ If not, it returns 0.
 
 Copies the null-terminated string `str` to `buf`. Note that the final `\0`
 byte is not copied.
-
-If a memory allocation function fails, `c_buffer_add_string` returns -1.
-If not, it returns 0.
+Returns 0 on success, or -1 if memory allocation fails.
 
 ## `c_buffer_add_vprintf`
 ~~~ {.c}
@@ -147,9 +141,7 @@ If not, it returns 0.
 
 Adds formatted data defined by the format string `fmt` and the `va_list`
 variable `ap` to `buf`. Note that no final '\0' is added.
-
-If formatting or memory allocation fails, `c_buffer_add_printf` returns -1.
-If not, it returns 0.
+Returns 0 on success, or -1 if formatting or memory allocation fails.
 
 ## `c_buffer_add_printf`
 ~~~ {.c}
@@ -158,9 +150,7 @@ If not, it returns 0.
 
 Adds formatted data defined by the format string `fmt` to `buf`. Note that no
 final '\0' is added.
-
-If formatting or memory allocation fails, `c_buffer_add_printf` returns -1.
-If not, it returns 0.
+Returns 0 on success, or -1 if formatting or memory allocation fails.
 
 ## `c_buffer_skip`
 ~~~ {.c}
@@ -206,14 +196,14 @@ Resets `buf` without releasing the memory associated with the content and
 returns a pointer on the content, effectively transferring ownership of the
 content to the caller.
 
-If `buf` is empty, `c_buffer_extract` returns NULL.
+If `buf` is empty, `c_buffer_extract` returns `NULL`.
 
-If `plen` is not `NULL`, stores the length of the content in the memory
+If `plen` is not null, stores the length of the content in the memory
 referenced by `plen`.
 
 `c_buffer_extract` uses `realloc` to truncate the memory used to store the
 content of the buffer to its real length. If the call to `realloc` fails,
-`c_buffer_extract` returns NULL, and the content of the buffer is not
+`c_buffer_extract` returns `NULL`, and the content of the buffer is not
 modified.
 
 ## `c_buffer_extract_string`
