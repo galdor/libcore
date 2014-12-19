@@ -25,5 +25,6 @@
 #include <core/hash-table.h>
 #include <core/unicode.h>
 #include <core/command-line.h>
+#include <core/queue.h>
 
 #endif

@@ -12,6 +12,7 @@ session.vim
 /tests/buffer
 /tests/command-line
 /tests/hash-table
+/tests/queue
 /tests/strings
 /tests/unicode
 /tests/vector

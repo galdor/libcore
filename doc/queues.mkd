@@ -1,0 +1,116 @@
+
+# Queues
+
+## `c_queue_new`
+~~~ {.c}
+    struct c_queue *c_queue_new(void);
+~~~~
+
+Creates and returns a new empty queue. Returns `NULL` if memory allocation
+fails.
+
+## `c_queue_delete`
+~~~ {.c}
+    void c_queue_delete(struct c_queue *queue);
+~~~
+
+Frees a queue and all data associated with it.
+
+## `c_queue_length`
+~~~ {.c}
+    size_t c_queue_length(const struct c_queue *queue);
+~~~
+
+Returns the length of a queue, i.e. the number of entries it contains.
+
+## `c_queue_is_empty`
+~~~ {.c}
+    bool c_queue_is_empty(const struct c_queue *queue);
+~~~
+
+Returns `true` if a queue is empty or `false` else.
+
+## `c_queue_clear`
+~~~ {.c}
+    void c_queue_clear(struct c_queue *queue);
+~~~
+
+Removes and delete all entries contained in a queue.
+
+## `c_queue_push`
+~~~ {.c}
+    int c_queue_push(struct c_queue *queue, void *value);
+~~~
+
+Adds a new entry at the end of a queue. Returns 0 on success or -1 if memory
+allocation fails.
+
+## `c_queue_peek`
+~~~ {.c}
+    void *c_queue_peek(const struct c_queue *queue);
+~~~
+
+Returns the value of the first entry of a queue, or `NULL` if the queue is
+empty.
+
+## `c_queue_pop`
+~~~ {.c}
+    void *c_queue_pop(struct c_queue *queue);
+~~~
+
+Removes the value of the first entry of a queue if it contains at least one
+entry and return its value, or returns `NULL` if the queue is empty.
+
+## `c_queue_first_entry`
+~~~ {.c}
+    struct c_queue_entry *c_queue_first_entry(struct c_queue *queue);
+~~~
+
+Returns the first entry of a queue or `NULL` if the queue is empty.
+
+## `c_queue_last_entry`
+~~~ {.c}
+    struct c_queue_entry *c_queue_last_entry(struct c_queue *queue);
+~~~
+
+Returns the last entry of a queue or `NULL` if the queue is empty.
+
+## `c_queue_entry_delete`
+~~~ {.c}
+    void c_queue_entry_delete(struct c_queue_entry *entry);
+~~~
+
+Deletes a queue entry. The behaviour of the function is undefined if the queue
+entry is still in a queue.
+
+## `c_queue_entry_prev`
+~~~ {.c}
+    struct c_queue_entry *c_queue_entry_prev(struct c_queue_entry *entry);
+~~~
+
+Returns the previous entry of a queue entry or `NULL` if the entry is the
+first entry in the queue.
+
+## `c_queue_entry_next`
+~~~ {.c}
+    struct c_queue_entry *c_queue_entry_next(struct c_queue_entry *entry);
+~~~
+
+Returns the next entry of a queue entry or `NULL` if the entry is the
+last entry in the queue.
+
+## `c_queue_entry_value`
+~~~ {.c}
+    void *c_queue_entry_value(const struct c_queue_entry *entry);
+~~~
+
+Returns the value of a queue entry.
+
+## `c_queue_remove_entry`
+~~~ {.c}
+    void c_queue_remove_entry(struct c_queue *queue, struct c_queue_entry *entry);
+~~~
+
+Removes an entry from a queue. This functions transfers ownership of the queue
+entry to the caller; the entry will have to be deleted with
+`c_queue_entry_delete`.

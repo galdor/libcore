@@ -33,5 +33,6 @@
 #include "hash-table.h"
 #include "unicode.h"
 #include "command-line.h"
+#include "queue.h"
 
 #endif
