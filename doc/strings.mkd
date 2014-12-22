@@ -53,3 +53,35 @@ of `string`.
 
 If the return value is greater or equal than `sz`, then `dest` does not
 contain all the characters of `string`.
+
+## `c_memory_search`
+
+~~~ {.c}
+    void *c_memory_search(const void *haystack, size_t haystack_sz,
+                          const void *needle, size_t needle_sz);
+~~~
+
+Searches and returns a pointer on the first occurrence of `needle` in
+`haystack` or `NULL` if `needle` is not in `haystack`. If `needle_sz` is zero,
+`haystack` is returned.
+
+## `c_memory_search_string`
+
+~~~ {.c}
+    char *c_memory_search_string(const void *haystack, size_t haystack_sz,
+                                 const char *needle);
+~~~
+
+Searches and returns a pointer on the first occurrence of `needle` in
+`haystack` or `NULL` if `needle` is not in `haystack`. If `needle` is an
+empty string, `haystack` is returned.
+
+## `c_string_search`
+
+~~~ {.c}
+    char *c_string_search(const char *haystack, const char *needle);
+~~~
+
+Searches and returns a pointer on the first occurrence of `needle` in
+`haystack` or `NULL` if `needle` is not in `haystack`. If `needle` is an
+empty string, `haystack` is returned.

@@ -14,6 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <stddef.h>
+
 #include <utest.h>
 
 #include "internal.h"
@@ -71,6 +73,51 @@ TEST(asprintf) {
 #undef C_TEST_ASPRINTF
 }
 
+TEST(string_search) {
+#define C_TEST_STRING_SEARCH(string_, needle_, expected_offset_) \
+    do {                                                         \
+        const char *ptr;                                         \
+        ptrdiff_t offset;                                        \
+                                                                 \
+        ptr = c_string_search(string_, needle_);                 \
+        if (!ptr) {                                              \
+            TEST_ABORT("string \"%s\" not found in \"%s\"",      \
+                       string_, needle_);                        \
+        }                                                        \
+                                                                 \
+        offset = ptr - string_;                                  \
+        TEST_INT_EQ(offset, expected_offset_);                   \
+    } while (0)
+
+    C_TEST_STRING_SEARCH("", "", 0);
+    C_TEST_STRING_SEARCH("abc", "a", 0);
+    C_TEST_STRING_SEARCH("abc", "b", 1);
+    C_TEST_STRING_SEARCH("abc", "bc", 1);
+    C_TEST_STRING_SEARCH("abcabc", "abc", 0);
+    C_TEST_STRING_SEARCH("fooabc", "abc", 3);
+    C_TEST_STRING_SEARCH("abcabcd", "abcd", 3);
+    C_TEST_STRING_SEARCH("abcabcd", "d", 6);
+
+#undef C_TEST_STRING_SEARCH
+
+
+#define C_TEST_STRING_SEARCH_NOT_FOUND(string_, needle_)         \
+    do {                                                         \
+        const char *ptr;                                         \
+                                                                 \
+        ptr = c_string_search(string_, needle_);                 \
+        if (ptr) {                                               \
+            TEST_ABORT("string \"%s\" found in \"%s\"",          \
+                       string_, needle_);                        \
+        }                                                        \
+    } while (0)
+
+    C_TEST_STRING_SEARCH_NOT_FOUND("", "a");
+    C_TEST_STRING_SEARCH_NOT_FOUND("abc", "abcd");
+
+#undef C_TEST_STRING_SEARCH_NOT_FOUND
+}
+
 int
 main(int argc, char **argv) {
     struct test_suite *suite;
@@ -82,6 +129,7 @@ main(int argc, char **argv) {
 
     TEST_RUN(suite, strndup);
     TEST_RUN(suite, asprintf);
+    TEST_RUN(suite, string_search);
 
     test_suite_print_results_and_exit(suite);
 }

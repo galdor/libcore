@@ -29,4 +29,8 @@ int c_asprintf(char **, const char *, ...)
 
 size_t c_strlcpy(char *, const char *, size_t);
 
+void *c_memory_search(const void *, size_t, const void *, size_t);
+char *c_memory_search_string(const void *, size_t, const char *);
+char *c_string_search(const char *, const char *);
+
 #endif

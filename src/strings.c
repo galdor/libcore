@@ -128,3 +128,59 @@ c_strlcpy(char *dst, const char *src, size_t siz)
 
     return (size_t)(s - src - 1);    /* count does not include NUL */
 }
+
+void *
+c_memory_search(const void *haystack, size_t haystack_sz,
+                const void *needle, size_t needle_sz) {
+    const unsigned char *nptr, *hptr;
+    size_t nlen, hlen;
+
+    size_t skip_table[256];
+
+    /* Boyer - Moore - Horspool */
+
+    hptr = (const unsigned char *)haystack;
+    hlen = haystack_sz;
+
+    nptr = (const unsigned char *)needle;
+    nlen = needle_sz;
+
+    /* An empty needle matches the beginning of the haystack */
+    if (nlen == 0)
+        return (void *)hptr;
+
+    /* Fill the skip table */
+    for (size_t i = 0; i <= 256; i++)
+        skip_table[i] = nlen;
+
+    for (size_t i = 0; i < nlen - 1; i++)
+        skip_table[nptr[i]] = nlen - 1 - i;
+
+    /* Search for the needle */
+    while (nlen <= hlen) {
+        size_t skip;
+
+        if (memcmp(hptr, nptr, nlen) == 0)
+            return (void *)hptr;
+
+        skip = skip_table[hptr[nlen - 1]];
+        if (skip > hlen)
+            break;
+
+        hlen -= skip;
+        hptr += skip;
+    }
+
+    return NULL;
+}
+
+char *
+c_memory_search_string(const void *haystack, size_t haystack_sz,
+                       const char *needle) {
+    return c_memory_search(haystack, haystack_sz, needle, strlen(needle));
+}
+
+char *
+c_string_search(const char *haystack, const char *needle) {
+    return c_memory_search(haystack, strlen(haystack), needle, strlen(needle));
+}
