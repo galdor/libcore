@@ -26,6 +26,9 @@ c_strndup(const char *str, size_t len) {
     char *nstr;
 
     nstr = c_malloc(len + 1);
+    if (!nstr)
+        return NULL;
+
     memcpy(nstr, str, len);
     nstr[len] = '\0';
 
