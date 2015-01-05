@@ -7,8 +7,8 @@
     char *c_strdup(const char *string);
 ~~~
 
-Returns a newly allocated string with the same content as `string`. If
-memory allocation fails, the function returns a null pointer.
+Returns a newly allocated string with the same content as `string` or `NULL`
+if memory allocation fails.
 
 ## `c_strndup`
 
@@ -16,8 +16,17 @@ memory allocation fails, the function returns a null pointer.
     char *c_strndup(const char *string, size_t sz);
 ~~~
 
-Returns a newly allocated string containg up to `sz` characters of `string`.
-If memory allocation fails, the function returns a null pointer.
+Returns a newly allocated string containing up to `sz` characters of `string`
+or `NULL` if memory allocation fails.
+
+## `c_memdup`
+
+~~~ {.c}
+    void *c_memdup(const void *ptr, size_t sz);
+~~~
+
+Returns a newly allocated chunk of memory containing up to `sz` bytes of `ptr`
+or `NULL` if memory allocation fails.
 
 ## `c_vasprintf`
 

@@ -32,6 +32,18 @@ c_strndup(const char *str, size_t len) {
     return nstr;
 }
 
+void *
+c_memdup(const void *ptr, size_t sz) {
+    void *nptr;
+
+    nptr = c_malloc(sz);
+    if (!nptr)
+        return NULL;
+
+    memcpy(nptr, ptr, sz);
+    return nptr;
+}
+
 int
 c_vasprintf(char **pstr, const char *fmt, va_list ap) {
     size_t sz, fmt_len;

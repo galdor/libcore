@@ -22,6 +22,7 @@
 
 char *c_strdup(const char *);
 char *c_strndup(const char *, size_t);
+void *c_memdup(const void *, size_t);
 
 int c_vasprintf(char **, const char *, va_list);
 int c_asprintf(char **, const char *, ...)
