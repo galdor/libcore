@@ -66,14 +66,14 @@ entry and return its value, or returns `NULL` if the queue is empty.
     struct c_queue_entry *c_queue_first_entry(struct c_queue *queue);
 ~~~
 
-Returns the first entry of a queue or `NULL` if the queue is empty.
+Returns the first entry, or head, of a queue or `NULL` if the queue is empty.
 
 ## `c_queue_last_entry`
 ~~~ {.c}
     struct c_queue_entry *c_queue_last_entry(struct c_queue *queue);
 ~~~
 
-Returns the last entry of a queue or `NULL` if the queue is empty.
+Returns the last entry, or tail,  of a queue or `NULL` if the queue is empty.
 
 ## `c_queue_entry_delete`
 ~~~ {.c}
