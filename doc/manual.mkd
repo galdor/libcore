@@ -83,6 +83,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 - [strings](strings.html)
 - [buffers](buffers.html)
 - [vectors](vectors.html)
+- [pointer vectors](ptr-vectors.html)
 - [hash tables](hash-tables.html)
 - [queues](queues.html)
 - [unicode](unicode.html)

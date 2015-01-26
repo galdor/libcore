@@ -23,7 +23,7 @@ Deletes a vector and all memory associated with it.
     void *c_vector_entries(const struct c_vector *vector);
 ~~~
 
-Return a pointer on the entries of a vector. All entries are stored in a
+Returns a pointer on the entries of a vector. All entries are stored in a
 single chunk of memory.
 
 ## `c_vector_length`

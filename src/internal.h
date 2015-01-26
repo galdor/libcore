@@ -30,6 +30,7 @@
 #include "strings.h"
 #include "buffer.h"
 #include "vector.h"
+#include "ptr-vector.h"
 #include "hash-table.h"
 #include "unicode.h"
 #include "command-line.h"

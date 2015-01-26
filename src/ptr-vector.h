@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 Nicolas Martyanoff
+ * Copyright (c) 2015 Nicolas Martyanoff
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,18 +14,23 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_CORE_H
-#define LIBCORE_CORE_H
+#ifndef LIBCORE_PTR_VECTOR_H
+#define LIBCORE_PTR_VECTOR_H
 
-#include <core/memory.h>
-#include <core/errors.h>
-#include <core/strings.h>
-#include <core/buffer.h>
-#include <core/vector.h>
-#include <core/ptr-vector.h>
-#include <core/hash-table.h>
-#include <core/unicode.h>
-#include <core/command-line.h>
-#include <core/queue.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+struct c_ptr_vector *c_ptr_vector_new(void);
+void c_ptr_vector_delete(struct c_ptr_vector *);
+
+void **c_ptr_vector_entries(const struct c_ptr_vector *);
+size_t c_ptr_vector_length(const struct c_ptr_vector *);
+bool c_ptr_vector_is_empty(const struct c_ptr_vector *);
+void *c_ptr_vector_entry(const struct c_ptr_vector *, size_t);
+
+void c_ptr_vector_clear(struct c_ptr_vector *);
+int c_ptr_vector_append(struct c_ptr_vector *, const void *);
+void c_ptr_vector_set(struct c_ptr_vector *, size_t, const void *);
+void c_ptr_vector_remove(struct c_ptr_vector *, size_t);
 
 #endif

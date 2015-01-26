@@ -16,3 +16,4 @@ session.vim
 /tests/strings
 /tests/unicode
 /tests/vector
+/tests/ptr-vector
