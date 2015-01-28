@@ -400,6 +400,11 @@ c_buffer_read(struct c_buffer *buf, int fd, size_t n) {
         return -1;
 
     ret = read(fd, ptr, n);
+    if (ret == -1) {
+        c_set_error("%s", strerror(errno));
+        return -1;
+    }
+
     if (ret > 0)
         buf->len += (size_t)ret;
 
@@ -411,6 +416,11 @@ c_buffer_write(struct c_buffer *buf, int fd) {
     ssize_t ret;
 
     ret = write(fd, buf->data + buf->skip, buf->len);
+    if (ret == -1) {
+        c_set_error("%s", strerror(errno));
+        return -1;
+    }
+
     if (ret > 0) {
         buf->len -= (size_t)ret;
         buf->skip += (size_t)ret;
