@@ -1,0 +1,94 @@
+
+# Heaps
+
+The heap module implements an array based binary heap. Heap entries are ranked
+using a comparison function, allowing constant time access to the lowest
+ranked entry.
+
+## `c_heap_cmp_func`
+~~~ {.c}
+    typedef int (*c_heap_cmp_func)(const void *, const void *);
+~~~
+
+A comparison function. The two arguments are two heap entries to compare. The
+function either returns:
+
+- -1 if the first entry comes first in the heap.
+- 1 if the second entry comes first in the heap.
+- 0 if the two entries have the same rank.
+
+## `c_heap_new`
+~~~ {.c}
+    struct c_heap *c_heap_new(c_heap_cmp_func cmp);
+~~~~
+
+Creates and returns a new empty heap based on the comparison function `cmp`.
+Returns `NULL` if memory allocation fails.
+
+## `c_heap_delete`
+~~~ {.c}
+    void c_heap_delete(struct c_heap *heap);
+~~~
+
+Deletes a heap and all data associated with it.
+
+## `c_heap_nb_entries`
+~~~ {.c}
+    size_t c_heap_entries(const struct c_heap *heap);
+~~~
+
+Returns the number of entries in a heap.
+
+## `c_heap_is_empty`
+~~~ {.c}
+    bool c_heap_is_empty(const struct c_heap *heap);
+~~~
+
+Returns `true` if a heap is empty or `false` else.
+
+## `c_heap_clear`
+~~~ {.c}
+    void c_heap_clear(struct c_heap *heap);
+~~~
+
+Removes and all entries contained in a heap.
+
+## `c_heap_reset`
+~~~ {.c}
+    void c_heap_reset(struct c_heap *heap);
+~~~
+
+Removes and all entries contained in a heap and release memory used for their
+storage.
+
+## `c_heap_add`
+~~~ {.c}
+    int c_heap_add(struct c_heap *heap, void *value);
+~~~
+
+Adds a new entry in a heap. Returns 0 on success or -1 if memory allocation
+fails.
+
+## `c_heap_peek`
+~~~ {.c}
+    void *c_heap_peek(const struct c_heap *heap);
+~~~
+
+Returns the first entry of a heap or `NULL` if the heap is empty.
+
+## `c_heap_pop`
+~~~ {.c}
+    void *c_heap_pop(struct c_heap *heap);
+~~~
+
+Removes the first entry of a heap if it contains at least one entry and return
+its value, or returns `NULL` if the heap is empty.
+
+## `c_heap_entry`
+~~~ {.c}
+    void *c_heap_entry(struct c_heap *heap, size_t idx);
+~~~
+
+Returns an entry from a heap using its index in the internal array. Note that
+iterating in the internal array from `0` to `idx - 1` will not enumerate
+entries from the lowest ranked entry to the highest ranked one.

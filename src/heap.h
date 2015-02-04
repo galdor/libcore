@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 Nicolas Martyanoff
+ * Copyright (c) 2015 Nicolas Martyanoff
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,27 +14,25 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_INTERNAL_H
-#define LIBCORE_INTERNAL_H
+#ifndef LIBCORE_HEAP_H
+#define LIBCORE_HEAP_H
 
-#include <errno.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "memory.h"
-#include "errors.h"
-#include "strings.h"
-#include "buffer.h"
-#include "vector.h"
-#include "ptr-vector.h"
-#include "hash-table.h"
-#include "unicode.h"
-#include "command-line.h"
-#include "queue.h"
-#include "heap.h"
+typedef int (*c_heap_cmp_func)(const void *, const void *);
+
+struct c_heap *c_heap_new(c_heap_cmp_func);
+void c_heap_delete(struct c_heap *);
+
+size_t c_heap_nb_entries(const struct c_heap *);
+bool c_heap_is_empty(const struct c_heap *);
+
+void c_heap_clear(struct c_heap *);
+void c_heap_reset(struct c_heap *);
+
+int c_heap_add(struct c_heap *, void *);
+void *c_heap_peek(const struct c_heap *);
+void *c_heap_pop(struct c_heap *);
+void *c_heap_entry(struct c_heap *, size_t);
 
 #endif
