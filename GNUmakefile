@@ -10,7 +10,8 @@ CFLAGS+= -std=c99
 CFLAGS+= -Wall -Wextra -Werror -Wsign-conversion
 CFLAGS+= -Wno-unused-parameter -Wno-unused-function
 
-LDFLAGS=
+CFLAGS+= -Isrc
+LDFLAGS+= -L.
 
 PANDOC_OPTS= -s --toc --email-obfuscation=none
 
@@ -53,15 +54,11 @@ libcore_PRIVINC= $(libcore_MAININC) src/internal.h
 libcore_PUBINC= $(filter-out $(libcore_PRIVINC),$(libcore_INC))
 libcore_OBJ= $(subst .c,.o,$(libcore_SRC))
 
-$(libcore_LIB): CFLAGS+=
-
 # Target: tests
 tests_SRC= $(wildcard tests/*.c)
 tests_OBJ= $(subst .c,.o,$(tests_SRC))
 tests_BIN= $(subst .o,,$(tests_OBJ))
 
-$(tests_BIN): CFLAGS+= -Isrc
-$(tests_BIN): LDFLAGS+= -L.
 $(tests_BIN): LDLIBS+= -lutest -lcore
 
 # Target: examples
@@ -69,8 +66,6 @@ examples_SRC= $(wildcard examples/*.c)
 examples_OBJ= $(subst .c,.o,$(examples_SRC))
 examples_BIN= $(subst .o,,$(examples_OBJ))
 
-$(examples_BIN): CFLAGS+= -Isrc
-$(examples_BIN): LDFLAGS+= -L.
 $(examples_BIN): LDLIBS+= -lcore
 
 # Target: doc
