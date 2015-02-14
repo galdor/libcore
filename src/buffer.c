@@ -405,9 +405,7 @@ c_buffer_read(struct c_buffer *buf, int fd, size_t n) {
         return -1;
     }
 
-    if (ret > 0)
-        buf->len += (size_t)ret;
-
+    buf->len += (size_t)ret;
     return ret;
 }
 
@@ -421,13 +419,11 @@ c_buffer_write(struct c_buffer *buf, int fd) {
         return -1;
     }
 
-    if (ret > 0) {
-        buf->len -= (size_t)ret;
-        buf->skip += (size_t)ret;
+    buf->len -= (size_t)ret;
+    buf->skip += (size_t)ret;
 
-        if (buf->len == 0)
-            buf->skip = 0;
-    }
+    if (buf->len == 0)
+        buf->skip = 0;
 
     return ret;
 }
