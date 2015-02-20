@@ -43,6 +43,7 @@ struct c_command_line_argument {
 struct c_command_line {
     char *program_name;
     char *program_description;
+    char *trailing_text;
 
     struct c_command_line_option **options;
     size_t nb_options;
@@ -106,6 +107,7 @@ c_command_line_delete(struct c_command_line *cmdline) {
     c_command_line_reset(cmdline);
 
     c_free(cmdline->program_description);
+    c_free(cmdline->trailing_text);
 
     for (size_t i = 0; i < cmdline->nb_options; i++)
         c_command_line_option_delete(cmdline->options[i]);
@@ -131,6 +133,21 @@ c_command_line_set_program_description(struct c_command_line *cmdline,
 
     c_free(cmdline->program_description);
     cmdline->program_description = program_description;
+
+    return 0;
+}
+
+int
+c_command_line_set_trailing_text(struct c_command_line *cmdline,
+                                 const char *text) {
+    char *trailing_text;
+
+    trailing_text = c_strdup(text);
+    if (!trailing_text)
+        return -1;
+
+    c_free(cmdline->trailing_text);
+    cmdline->trailing_text = trailing_text;
 
     return 0;
 }
@@ -363,6 +380,9 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
             c_buffer_add_printf(buf, "%s\n", option->description);
         }
     }
+
+    if (cmdline->trailing_text)
+        c_buffer_add_printf(buf, "\n%s\n", cmdline->trailing_text);
 
     /* Arguments */
     if (cmdline->nb_arguments > 0) {

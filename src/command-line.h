@@ -24,6 +24,7 @@ void c_command_line_delete(struct c_command_line *);
 
 int c_command_line_set_program_description(struct c_command_line *,
                                            const char *);
+int c_command_line_set_trailing_text(struct c_command_line *, const char *);
 
 int c_command_line_add_flag(struct c_command_line *,
                             const char *, const char *, const char *);

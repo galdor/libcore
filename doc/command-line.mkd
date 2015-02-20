@@ -46,6 +46,15 @@ Deletes a command line handler.
 Sets the string used as a description of the program in the usage string.
 Returns 0 on success or -1 if memory allocation fails.
 
+## `c_command_line_set_trailing_text`
+~~~ {.c}
+    int c_command_line_set_trailing_text(struct c_command_line *cmdline,
+                                         const char *text);
+~~~
+
+Sets the string to be printed at the end of the usage string.
+Returns 0 on success or -1 if memory allocation fails.
+
 ## `c_command_line_add_flag`
 ~~~ {.c}
     int c_command_line_add_flag(struct c_command_line *cmdline,
