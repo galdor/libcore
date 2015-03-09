@@ -358,12 +358,11 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
 
     /* Options */
     if (cmdline->nb_options > 0) {
-        size_t lnwidth, vnwidth;
+        size_t width;
         char *tmp;
         size_t tmp_size;
 
-        lnwidth = 0;
-        vnwidth = 0;
+        width = 0;
 
         for (size_t i = 0; i < cmdline->nb_options; i++) {
             struct c_command_line_option *option;
@@ -371,26 +370,19 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
 
             option = cmdline->options[i];
 
-            if (option->long_name) {
-                length = strlen(option->long_name);
-                if (length > lnwidth)
-                    lnwidth = length;
-            }
+            length = 0;
 
-            if (option->value_name) {
-                length = strlen(option->value_name);
-                if (length > vnwidth)
-                    vnwidth = length;
-            }
+            if (option->long_name)
+                length += strlen(option->long_name) + 2; /* "--" */
+
+            if (option->value_name)
+                length += strlen(option->value_name) + 3; /* " <>" */
+
+            if (length > width)
+                width = length;
         }
 
-        lnwidth += 2; /* "--" */
-        vnwidth += 2; /* "<>" */
-
-        tmp_size = lnwidth;
-        if (vnwidth >= lnwidth)
-            tmp_size = vnwidth;
-        tmp_size += 1;
+        tmp_size = width + 1;
 
         tmp = c_malloc(tmp_size);
         if (!tmp) {
@@ -414,20 +406,24 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
             }
 
             if (option->long_name) {
-                snprintf(tmp, tmp_size, "--%s", option->long_name);
-                c_buffer_add_printf(buf, "%-*s ", (int)lnwidth, tmp);
+                if (option->value_name) {
+                    snprintf(tmp, tmp_size, "--%s <%s>",
+                             option->long_name, option->value_name);
+                } else {
+                    snprintf(tmp, tmp_size, "--%s",
+                             option->long_name);
+                }
             } else {
-                c_buffer_add_printf(buf, "%-*s ", (int)lnwidth, "");
+                if (option->value_name) {
+                    snprintf(tmp, tmp_size, "<%s>",
+                             option->value_name);
+                } else {
+                    snprintf(tmp, tmp_size, "");
+                }
             }
 
-            if (option->value_name) {
-                snprintf(tmp, tmp_size, "<%s>", option->value_name);
-                c_buffer_add_printf(buf, "%-*s  ", (int)vnwidth, tmp);
-            } else {
-                c_buffer_add_printf(buf, "%-*s  ", (int)vnwidth, "");
-            }
-
-            c_buffer_add_printf(buf, "%s\n", option->description);
+            c_buffer_add_printf(buf, "%-*s  %s\n",
+                                (int)width, tmp, option->description);
         }
 
         c_free(tmp);
