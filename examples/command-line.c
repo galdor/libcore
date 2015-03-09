@@ -19,7 +19,7 @@
 int
 main(int argc, char **argv) {
     struct c_command_line *cmdline;
-    const char *string_value;
+    const char *value, *string_value;
     size_t nb_trailing_args;
 
     cmdline = c_command_line_new();
@@ -33,9 +33,12 @@ main(int argc, char **argv) {
     c_command_line_add_flag(cmdline, NULL, "long",
                             "a boolean option without short name");
 
+    c_command_line_add_option(cmdline, "v", NULL,
+                              "an option with a value and no long name",
+                              "value", NULL);
     c_command_line_add_option(cmdline, NULL, "string-value",
-                                     "an option with a string value",
-                                     "string", NULL);
+                              "an option with a string value",
+                              "string", NULL);
 
     c_command_line_add_argument(cmdline, "the first argument", "arg-1");
     c_command_line_add_argument(cmdline, "the second argument", "arg-2");
@@ -52,6 +55,9 @@ main(int argc, char **argv) {
 
     printf("'long' option set: %s\n",
            c_command_line_is_option_set(cmdline, "long") ? "yes" : "no");
+
+    value = c_command_line_option_value(cmdline, "v");
+    printf("'value' option: %s\n", (value ? value : "NULL"));
 
     string_value = c_command_line_option_value(cmdline, "string-value");
     printf("'string-value' option: %s\n",

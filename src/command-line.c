@@ -358,6 +358,46 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
 
     /* Options */
     if (cmdline->nb_options > 0) {
+        size_t lnwidth, vnwidth;
+        char *tmp;
+        size_t tmp_size;
+
+        lnwidth = 0;
+        vnwidth = 0;
+
+        for (size_t i = 0; i < cmdline->nb_options; i++) {
+            struct c_command_line_option *option;
+            size_t length;
+
+            option = cmdline->options[i];
+
+            if (option->long_name) {
+                length = strlen(option->long_name);
+                if (length > lnwidth)
+                    lnwidth = length;
+            }
+
+            if (option->value_name) {
+                length = strlen(option->value_name);
+                if (length > vnwidth)
+                    vnwidth = length;
+            }
+        }
+
+        lnwidth += 2; /* "--" */
+        vnwidth += 2; /* "<>" */
+
+        tmp_size = lnwidth;
+        if (vnwidth >= lnwidth)
+            tmp_size = vnwidth;
+        tmp_size += 1;
+
+        tmp = c_malloc(tmp_size);
+        if (!tmp) {
+            c_set_error("cannot allocate temporary buffer: %s", c_get_error());
+            goto error;
+        }
+
         c_buffer_add_string(buf, "OPTIONS\n\n");
 
         for (size_t i = 0; i < cmdline->nb_options; i++) {
@@ -366,19 +406,31 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
             option = cmdline->options[i];
 
             if (option->short_name) {
-                c_buffer_add_printf(buf, "-%s, ", option->short_name);
+                c_buffer_add_printf(buf, "-%s%s ",
+                                    option->short_name,
+                                    option->long_name ? "," : " ");
             } else {
                 c_buffer_add_string(buf, "    ");
             }
 
             if (option->long_name) {
-                c_buffer_add_printf(buf, "--%-16s  ", option->long_name);
+                snprintf(tmp, tmp_size, "--%s", option->long_name);
+                c_buffer_add_printf(buf, "%-*s ", (int)lnwidth, tmp);
             } else {
-                c_buffer_add_string(buf, "                    ");
+                c_buffer_add_printf(buf, "%-*s ", (int)lnwidth, "");
+            }
+
+            if (option->value_name) {
+                snprintf(tmp, tmp_size, "<%s>", option->value_name);
+                c_buffer_add_printf(buf, "%-*s  ", (int)vnwidth, tmp);
+            } else {
+                c_buffer_add_printf(buf, "%-*s  ", (int)vnwidth, "");
             }
 
             c_buffer_add_printf(buf, "%s\n", option->description);
         }
+
+        c_free(tmp);
     }
 
     if (cmdline->trailing_text)
