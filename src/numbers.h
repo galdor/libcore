@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 Nicolas Martyanoff
+ * Copyright (c) 2015 Nicolas Martyanoff
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,28 +14,26 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef LIBCORE_INTERNAL_H
-#define LIBCORE_INTERNAL_H
+#ifndef LIBCORE_NUMBERS_H
+#define LIBCORE_NUMBERS_H
 
-#include <errno.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdint.h>
 
-#include "memory.h"
-#include "errors.h"
-#include "numbers.h"
-#include "strings.h"
-#include "buffer.h"
-#include "vector.h"
-#include "ptr-vector.h"
-#include "hash-table.h"
-#include "unicode.h"
-#include "command-line.h"
-#include "queue.h"
-#include "heap.h"
+int c_parse_integer(const char *, int64_t, int64_t,
+                    int64_t *, size_t *);
+
+int c_parse_i8(const char *, int8_t *, size_t *);
+int c_parse_i16(const char *, int16_t *, size_t *);
+int c_parse_i32(const char *, int32_t *, size_t *);
+int c_parse_i64(const char *, int64_t *, size_t *);
+
+int c_parse_unsigned_integer(const char *, uint64_t, uint64_t,
+                             uint64_t *, size_t *);
+
+int c_parse_u8(const char *, uint8_t *, size_t *);
+int c_parse_u16(const char *, uint16_t *, size_t *);
+int c_parse_u32(const char *, uint32_t *, size_t *);
+int c_parse_u64(const char *, uint64_t *, size_t *);
 
 #endif

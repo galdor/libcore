@@ -13,6 +13,7 @@ session.vim
 /tests/command-line
 /tests/hash-table
 /tests/heap
+/tests/numbers
 /tests/ptr-vector
 /tests/queue
 /tests/strings

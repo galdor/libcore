@@ -80,6 +80,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 
 - [errors](errors.html)
 - [memory](memory.html)
+- [numbers](numbers.html)
 - [strings](strings.html)
 - [buffers](buffers.html)
 - [vectors](vectors.html)

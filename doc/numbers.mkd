@@ -1,0 +1,119 @@
+
+# Numbers
+
+## `c_parse_integer`
+
+~~~ {.c}
+    int c_parse_integer(const char *string, int64_t min, int64_t max,
+                        int64_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an integer using base 10. If the
+conversion succeeds and `pvalue` is not null, store the integer in it. If the
+conversion succeeds and `psz` is not null, store the number of bytes converted
+in it.
+
+Returns 0 on success or -1 if `string` does not contain a valid integer, or if
+the integer is lower than `min` or greater than `max`.
+
+A valid integer is defined as one or more digits ('0' to '9') optionally
+prefixed by a sign ('-' or '+').
+
+## `c_parse_i8`
+
+~~~ {.c}
+    int c_parse_i8(const char *string, int8_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `int8_t` integer using base 10.
+This functions works the same way as `c_parse_integer`, with `min` being
+`INT8_MIN` and `max` being `INT8_MAX`.
+
+## `c_parse_i16`
+
+~~~ {.c}
+    int c_parse_i16(const char *string, int16_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `int16_t` integer using base 10.
+This functions works the same way as `c_parse_integer`, with `min` being
+`INT16_MIN` and `max` being `INT16_MAX`.
+
+## `c_parse_i32`
+
+~~~ {.c}
+    int c_parse_i32(const char *string, int32_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `int32_t` integer using base 10.
+This functions works the same way as `c_parse_integer`, with `min` being
+`INT32_MIN` and `max` being `INT32_MAX`.
+
+## `c_parse_i64`
+
+~~~ {.c}
+    int c_parse_i64(const char *string, int64_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `int64_t` integer using base 10.
+This functions works the same way as `c_parse_integer`, with `min` being
+`INT64_MIN` and `max` being `INT64_MAX`.
+
+## `c_parse_unsigned_integer`
+
+~~~ {.c}
+    int c_parse_unsigned_integer(const char *string, uint64_t min, uint64_t max,
+                                 uint64_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an unsigned integer using base 10. If
+the conversion succeeds and `pvalue` is not null, store the integer in it. If
+the conversion succeeds and `psz` is not null, store the number of bytes
+converted in it.
+
+Returns 0 on success or -1 if `string` does not contain a valid unsigned
+integer, or if the integer is lower than `min` or greater than `max`.
+
+A valid unsigned integer is defined as one or more digits ('0' to '9')
+optionally prefixed by a sign ('-' or '+'). The minus ('-') sign can only be
+used for the string representing the number 0.
+
+## `c_parse_u8`
+
+~~~ {.c}
+    int c_parse_u8(const char *string, uint8_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `uint8_t` unsigned integer using
+base 10. This functions works the same way as `c_parse_unsigned_integer`, with
+`min` being `UINT8_MIN` and `max` being `UINT8_MAX`.
+
+## `c_parse_u16`
+
+~~~ {.c}
+    int c_parse_u16(const char *string, uint16_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `uint16_t` unsigned integer using
+base 10. This functions works the same way as `c_parse_unsigned_integer`, with
+`min` being `UINT16_MIN` and `max` being `UINT16_MAX`.
+
+## `c_parse_u32`
+
+~~~ {.c}
+    int c_parse_u32(const char *string, uint32_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `uint32_t` unsigned integer using
+base 10. This functions works the same way as `c_parse_unsigned_integer`, with
+`min` being `UINT32_MIN` and `max` being `UINT32_MAX`.
+
+## `c_parse_u64`
+
+~~~ {.c}
+    int c_parse_u64(const char *string, uint64_t *pvalue, size_t *psz);
+~~~
+
+Converts the initial part of a string to an `uint64_t` unsigned integer using
+base 10. This functions works the same way as `c_parse_unsigned_integer`, with
+`min` being `UINT64_MIN` and `max` being `UINT64_MAX`.

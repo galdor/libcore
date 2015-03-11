@@ -19,6 +19,7 @@
 
 #include <core/memory.h>
 #include <core/errors.h>
+#include <core/numbers.h>
 #include <core/strings.h>
 #include <core/buffer.h>
 #include <core/vector.h>
