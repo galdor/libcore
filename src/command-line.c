@@ -323,6 +323,7 @@ char *
 c_command_line_usage_string(const struct c_command_line *cmdline) {
     struct c_buffer *buf;
     char *string;
+    size_t width;
 
     if (!cmdline->program_name) {
         c_set_error("no command line parsed");
@@ -332,6 +333,40 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
     buf = c_buffer_new();
     if (!buf)
         return NULL;
+
+    /* First column width */
+    width = 0;
+
+    for (size_t i = 0; i < cmdline->nb_options; i++) {
+        struct c_command_line_option *option;
+        size_t length;
+
+        option = cmdline->options[i];
+
+        length = 4; /* short name + ", " */
+
+        if (option->long_name)
+            length += strlen(option->long_name) + 2; /* "--" */
+
+        if (option->value_name)
+            length += strlen(option->value_name) + 3; /* " <>" */
+
+        if (length > width)
+            width = length;
+    }
+
+    for (size_t i = 0; i < cmdline->nb_arguments; i++) {
+        struct c_command_line_argument *argument;
+        size_t length;
+
+        argument = cmdline->arguments[i];
+        length = strlen(argument->value_name);
+
+        if (length > width)
+            width = length;
+    }
+
+    printf("WIDTH %zu\n", width);
 
     /* Usage line */
     c_buffer_add_printf(buf, "Usage: %s", cmdline->program_name);
@@ -358,32 +393,10 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
 
     /* Options */
     if (cmdline->nb_options > 0) {
-        size_t width;
         char *tmp;
         size_t tmp_size;
 
-        width = 0;
-
-        for (size_t i = 0; i < cmdline->nb_options; i++) {
-            struct c_command_line_option *option;
-            size_t length;
-
-            option = cmdline->options[i];
-
-            length = 0;
-
-            if (option->long_name)
-                length += strlen(option->long_name) + 2; /* "--" */
-
-            if (option->value_name)
-                length += strlen(option->value_name) + 3; /* " <>" */
-
-            if (length > width)
-                width = length;
-        }
-
         tmp_size = width + 1;
-
         tmp = c_malloc(tmp_size);
         if (!tmp) {
             c_set_error("cannot allocate temporary buffer: %s", c_get_error());
@@ -423,14 +436,12 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
             }
 
             c_buffer_add_printf(buf, "%-*s  %s\n",
-                                (int)width, tmp, option->description);
+                                (int)width - 4, /* the short name is not in tmp */
+                                tmp, option->description);
         }
 
         c_free(tmp);
     }
-
-    if (cmdline->trailing_text)
-        c_buffer_add_printf(buf, "\n%s\n", cmdline->trailing_text);
 
     /* Arguments */
     if (cmdline->nb_arguments > 0) {
@@ -441,11 +452,15 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
 
             argument = cmdline->arguments[i];
 
-            c_buffer_add_printf(buf, "%-22s  %s\n",
-                                argument->value_name,
+            c_buffer_add_printf(buf, "%-*s  %s\n",
+                                (int)width, argument->value_name,
                                 argument->description);
         }
     }
+
+    /* Trailing text */
+    if (cmdline->trailing_text)
+        c_buffer_add_printf(buf, "\n%s\n", cmdline->trailing_text);
 
     string = c_buffer_extract_string(buf, NULL);
     if (!string)
