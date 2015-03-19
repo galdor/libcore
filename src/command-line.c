@@ -366,8 +366,6 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
             width = length;
     }
 
-    printf("WIDTH %zu\n", width);
-
     /* Usage line */
     c_buffer_add_printf(buf, "Usage: %s", cmdline->program_name);
     if (cmdline->nb_options > 0)
