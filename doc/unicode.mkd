@@ -43,6 +43,14 @@ Reads a unicode codepoint from a string and stores it in `pcodepoint`. If
 
 Returns 0 if a character string is a valid UTF-8 string, or -1 else.
 
+## `c_utf8_nb_codepoints`
+~~~ {.c}
+    int c_utf8_nb_codepoints(const char *string, size_t *pcount);
+~~~
+
+Computes the number of codepoints in a string, and return it in `pcount`.
+Returns 0 if the string is a valid UTF-8 string, or -1 else.
+
 ## `c_utf8_decode`
 ~~~ {.c}
     uint32_t *c_utf8_decode(const char *string);

@@ -194,6 +194,29 @@ c_utf8_validate(const char *string) {
     return 0;
 }
 
+int
+c_utf8_nb_codepoints(const char *string, size_t *pcount) {
+    const char *ptr;
+    size_t count;
+
+    ptr = string;
+    count = 0;
+
+    while (*ptr != '\0') {
+        uint32_t codepoint;
+        size_t length;
+
+        if (c_utf8_read_codepoint(ptr, &codepoint, &length) == -1)
+            return -1;
+
+        count++;
+        ptr += length;
+    }
+
+    *pcount = count;
+    return 0;
+}
+
 uint32_t *
 c_utf8_decode(const char *string) {
     uint32_t *codepoints;

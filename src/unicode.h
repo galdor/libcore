@@ -28,6 +28,7 @@ bool c_ustring_equal(const uint32_t *, const uint32_t *);
 int c_utf8_read_codepoint(const char *, uint32_t *, size_t *);
 
 int c_utf8_validate(const char *);
+int c_utf8_nb_codepoints(const char *, size_t *);
 
 uint32_t *c_utf8_decode(const char *);
 
