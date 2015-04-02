@@ -253,6 +253,7 @@ c_command_line_parse(struct c_command_line *cmdline, int argc, char **argv) {
                 }
             } else {
                 /* "-" or "--" */
+                i++;
                 goto end_of_options;
             }
         } else {
