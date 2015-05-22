@@ -75,7 +75,7 @@ TEST(parse_unsigned_integer) {
         if (c_parse_unsigned_integer(string_, min_, max_, &value, &sz) == -1) \
             TEST_ABORT("cannot parse unsigned integer: %s", c_get_error());   \
                                                                               \
-        TEST_INT_EQ(value, expected_value_);                                  \
+        TEST_UINT_EQ(value, expected_value_);                                 \
         TEST_UINT_EQ(sz, expected_sz_);                                       \
     } while (0)
 
