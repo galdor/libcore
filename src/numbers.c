@@ -203,3 +203,15 @@ c_parse_u64(const char *string, uint64_t *pvalue, size_t *psz) {
         *pvalue = value;
     return 0;
 }
+
+int
+c_parse_size(const char *string, size_t *pvalue, size_t *psz) {
+    uint64_t value;
+
+    if (c_parse_unsigned_integer(string, 0, SIZE_MAX, &value, psz) == -1)
+        return -1;
+
+    if (pvalue)
+        *pvalue = value;
+    return 0;
+}

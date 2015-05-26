@@ -35,5 +35,6 @@ int c_parse_u8(const char *, uint8_t *, size_t *);
 int c_parse_u16(const char *, uint16_t *, size_t *);
 int c_parse_u32(const char *, uint32_t *, size_t *);
 int c_parse_u64(const char *, uint64_t *, size_t *);
+int c_parse_size(const char *, size_t *, size_t *);
 
 #endif
