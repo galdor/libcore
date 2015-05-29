@@ -251,9 +251,12 @@ c_command_line_parse(struct c_command_line *cmdline, int argc, char **argv) {
                         i++;
                     }
                 }
-            } else {
-                /* "-" or "--" */
+            } else if (arg[1] == '-') {
+                /* '--' separator */
                 i++;
+                goto end_of_options;
+            } else {
+                /* '-' */
                 goto end_of_options;
             }
         } else {

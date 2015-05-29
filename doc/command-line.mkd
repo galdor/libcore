@@ -11,8 +11,8 @@ arguments. This module enforces the following rules:
   character preceded by two dash characters.
 - Options using long names cannot be provided with the `--name=value` syntax,
   and must instead use two separate arguments, as in `--name value`.
-- A separator argument, either one or two dash characters, can be used to
-  separate options and arguments. These separators are ignored.
+- A separator argument, two dash characters, can be used to separate options
+  and arguments.
 - A single set of trailing arguments can be used after all other arguments. It
   must contain at least one argument.
 - The command line handler automatically defines an option with the names `h`
