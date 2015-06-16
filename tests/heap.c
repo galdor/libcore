@@ -28,8 +28,13 @@ static int c_test_heap_cmp(const void *, const void *);
         TEST_UINT_EQ(c_heap_nb_entries(heap_), nb_entries);         \
                                                                     \
         for (size_t i = 0; i < c_heap_nb_entries(heap_); i++) {     \
-            TEST_INT_EQ(C_POINTER_TO_INT32(c_heap_entry(heap_, i)), \
-                        entries[i]);                                \
+            int value;                                              \
+                                                                    \
+            value = C_POINTER_TO_INT32(c_heap_entry(heap_, i));     \
+            if (value != entries[i]) {                              \
+                TEST_ABORT("entry %zu has value %d but should "     \
+                           "have value %d", i, value, entries[i]);  \
+            }                                                       \
         }                                                           \
     } while (0)
 
@@ -96,6 +101,79 @@ TEST(pop) {
     c_heap_delete(heap);
 }
 
+TEST(find) {
+    struct c_heap *heap;
+    size_t idx;
+
+    heap = c_heap_new(c_test_heap_cmp);
+
+    c_heap_add(heap, C_INT32_TO_POINTER(9));
+    c_heap_add(heap, C_INT32_TO_POINTER(3));
+    c_heap_add(heap, C_INT32_TO_POINTER(4));
+    c_heap_add(heap, C_INT32_TO_POINTER(2));
+    c_heap_add(heap, C_INT32_TO_POINTER(5));
+    c_heap_add(heap, C_INT32_TO_POINTER(1));
+
+    C_TEST_HEAP_EQ(heap, 1, 3, 2, 9, 5, 4);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(1), &idx), 1);
+    TEST_UINT_EQ(idx, 0);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(3), &idx), 1);
+    TEST_UINT_EQ(idx, 1);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(2), &idx), 1);
+    TEST_UINT_EQ(idx, 2);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(9), &idx), 1);
+    TEST_UINT_EQ(idx, 3);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(5), &idx), 1);
+    TEST_UINT_EQ(idx, 4);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(4), &idx), 1);
+    TEST_UINT_EQ(idx, 5);
+
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(6), &idx), 0);
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(7), &idx), 0);
+    TEST_INT_EQ(c_heap_find(heap, C_INT32_TO_POINTER(8), &idx), 0);
+
+    c_heap_delete(heap);
+}
+
+TEST(remove) {
+    struct c_heap *heap;
+
+    heap = c_heap_new(c_test_heap_cmp);
+
+    c_heap_add(heap, C_INT32_TO_POINTER(9));
+    c_heap_add(heap, C_INT32_TO_POINTER(3));
+    c_heap_add(heap, C_INT32_TO_POINTER(4));
+    c_heap_add(heap, C_INT32_TO_POINTER(2));
+    c_heap_add(heap, C_INT32_TO_POINTER(5));
+    c_heap_add(heap, C_INT32_TO_POINTER(1));
+
+    C_TEST_HEAP_EQ(heap, 1, 3, 2, 9, 5, 4);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(1));
+    C_TEST_HEAP_EQ(heap, 2, 3, 4, 9, 5);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(5));
+    C_TEST_HEAP_EQ(heap, 2, 3, 4, 9);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(2));
+    C_TEST_HEAP_EQ(heap, 3, 9, 4);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(9));
+    C_TEST_HEAP_EQ(heap, 3, 4);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(4));
+    C_TEST_HEAP_EQ(heap, 3);
+
+    c_heap_remove(heap, C_INT32_TO_POINTER(3));
+    C_TEST_HEAP_EQ(heap);
+}
+
 int
 main(int argc, char **argv) {
     struct test_suite *suite;
@@ -107,6 +185,8 @@ main(int argc, char **argv) {
 
     TEST_RUN(suite, add);
     TEST_RUN(suite, pop);
+    TEST_RUN(suite, find);
+    TEST_RUN(suite, remove);
 
     test_suite_print_results_and_exit(suite);
 }

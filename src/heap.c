@@ -101,6 +101,50 @@ c_heap_add(struct c_heap *heap, void *entry) {
     return 0;
 }
 
+int
+c_heap_remove(struct c_heap *heap, const void *entry) {
+    size_t idx, parent_idx;
+
+    if (c_heap_find(heap, entry, &idx) == 0)
+        return 0;
+
+    if (idx == 0) {
+        c_heap_pop(heap);
+        return 1;
+    }
+
+    if (idx < heap->nb_entries - 1)
+        heap->entries[idx] = heap->entries[heap->nb_entries - 1];
+
+    parent_idx = (idx - 1) / 2;
+    if (heap->cmp(heap->entries[idx], heap->entries[parent_idx]) < 0) {
+        c_heap_bubble_up(heap, idx);
+    } else {
+        c_heap_sink_down(heap, idx);
+    }
+
+    heap->nb_entries--;
+    return 1;
+}
+
+int
+c_heap_find(const struct c_heap *heap, const void *entry, size_t *pidx) {
+    for (size_t i = 0; i < heap->nb_entries; i++) {
+        if (heap->entries[i] == entry) {
+            if (pidx)
+                *pidx = i;
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+bool
+c_heap_contains(const struct c_heap *heap, const void *entry) {
+    return c_heap_find(heap, entry, NULL) == 1;
+}
+
 void *
 c_heap_peek(const struct c_heap *heap) {
     if (heap->nb_entries == 0)
@@ -130,7 +174,7 @@ c_heap_pop(struct c_heap *heap) {
 }
 
 void *
-c_heap_entry(struct c_heap *heap, size_t idx) {
+c_heap_entry(const struct c_heap *heap, size_t idx) {
     assert(idx < heap->nb_entries);
 
     return heap->entries[idx];

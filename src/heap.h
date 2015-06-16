@@ -31,8 +31,14 @@ void c_heap_clear(struct c_heap *);
 void c_heap_reset(struct c_heap *);
 
 int c_heap_add(struct c_heap *, void *);
+int c_heap_remove(struct c_heap *, const void *);
+
+int c_heap_find(const struct c_heap *, const void *, size_t *);
+bool c_heap_contains(const struct c_heap *, const void *);
+
 void *c_heap_peek(const struct c_heap *);
 void *c_heap_pop(struct c_heap *);
-void *c_heap_entry(struct c_heap *, size_t);
+
+void *c_heap_entry(const struct c_heap *, size_t);
 
 #endif

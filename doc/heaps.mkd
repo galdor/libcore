@@ -63,11 +63,38 @@ storage.
 
 ## `c_heap_add`
 ~~~ {.c}
-    int c_heap_add(struct c_heap *heap, void *value);
+    int c_heap_add(struct c_heap *heap, void *entry);
 ~~~
 
 Adds a new entry in a heap. Returns 0 on success or -1 if memory allocation
 fails.
+
+## `c_heap_remove`
+~~~ {.c}
+    int c_heap_remove(struct c_heap *, const void *entry);
+~~~
+
+Removes an entry from a heap. Returns 1 if the entry was found and removed or
+0 if it was not found. Note that looking for the entry in the heap is an O(n)
+operation.
+
+## `c_heap_find`
+~~~ {.c}
+    int c_heap_find(const struct c_heap *heap, const void *entry, size_t *pidx);
+~~~
+
+Looks for an entry in a heap. Returns 1 if the entry was found or 0 if it was
+not. If the entry was found, its position is returned in `pidx` if `pidx` is
+not
+null.
+
+## `c_heap_contains`
+~~~ {.c}
+    bool c_heap_contains(const struct c_heap *heap, const void *entry);
+~~~
+
+Looks for an entry in a heap. Returns `true` if the entry was found, or
+`false` if it was not.
 
 ## `c_heap_peek`
 ~~~ {.c}
@@ -86,7 +113,7 @@ its value, or returns `NULL` if the heap is empty.
 
 ## `c_heap_entry`
 ~~~ {.c}
-    void *c_heap_entry(struct c_heap *heap, size_t idx);
+    void *c_heap_entry(const struct c_heap *heap, size_t idx);
 ~~~
 
 Returns an entry from a heap using its index in the internal array. Note that
