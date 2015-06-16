@@ -21,6 +21,8 @@
 
 #include <stdlib.h>
 
+#define C_BUFFER_MIN_SIZE 32
+
 struct c_buffer *c_buffer_new(void);
 void c_buffer_delete(struct c_buffer *);
 

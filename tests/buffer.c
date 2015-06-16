@@ -163,27 +163,39 @@ TEST(free_space_after_skip) {
 
     buf = c_buffer_new();
 
+    /* Make sure that the skip counter is reset when skipping/removing the
+     * last byte of content of the buffer */
+
     c_buffer_add_string(buf, "abcdefgh");
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 8);
     c_buffer_clear(buf);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE);
 
     c_buffer_add_string(buf, "hello");
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_skip(buf, 5);
-    TEST_UINT_EQ(c_buffer_free_space(buf), 8);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE);
 
     c_buffer_add_string(buf, "hello");
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_skip(buf, 3);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_skip(buf, 2);
-    TEST_UINT_EQ(c_buffer_free_space(buf), 8);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE);
 
     c_buffer_add_string(buf, "hello");
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_skip(buf, 2);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_remove_before(buf, 3, 3);
-    TEST_UINT_EQ(c_buffer_free_space(buf), 8);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE);
 
     c_buffer_add_string(buf, "hello");
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_skip(buf, 2);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE - 5);
     c_buffer_remove_after(buf, 0, 3);
-    TEST_UINT_EQ(c_buffer_free_space(buf), 8);
+    TEST_UINT_EQ(c_buffer_free_space(buf), C_BUFFER_MIN_SIZE);
 }
 
 int
