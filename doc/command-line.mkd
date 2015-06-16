@@ -117,8 +117,9 @@ Parses an array of arguments and fill a command line handler. The argument
 array must contain the program name as first argument (this is the case for
 the usual `argc` and `argv` arguments of the `main` function).
 
-Returns 0 on success or -1 if parsing or memory allocation failed. If the
-`help` option is set, the function does not return.
+Returns the number of arguments processed on success or -1 if parsing or
+memory allocation failed. If the `help` option is set, the function does not
+return.
 
 ## `c_command_line_usage_string`
 ~~~ {.c}
