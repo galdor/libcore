@@ -74,11 +74,11 @@ TEST(option_flags) {
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "a"), true);
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "c"), false);
 
-    C_TEST_CMDLINE_PARSE(cmdline, 3, "test", "-a", "-c", "-");
+    C_TEST_CMDLINE_PARSE(cmdline, 4, "test", "-a", "-c", "--");
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "a"), true);
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "c"), true);
 
-    C_TEST_CMDLINE_PARSE(cmdline, 1, "test", "--", "-a", "-c");
+    C_TEST_CMDLINE_PARSE(cmdline, 2, "test", "--", "-a", "-c");
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "a"), false);
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "c"), false);
 
@@ -132,7 +132,7 @@ TEST(option_values) {
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "opt-b"), false);
     TEST_STRING_EQ(c_command_line_option_value(cmdline, "opt-b"), "B");
 
-    C_TEST_CMDLINE_PARSE(cmdline, 1, "test", "--", "-a", "1", "--opt-b", "2");
+    C_TEST_CMDLINE_PARSE(cmdline, 2, "test", "--", "-a", "1", "--opt-b", "2");
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "a"), false);
     TEST_STRING_EQ(c_command_line_option_value(cmdline, "opt-a"), "A");
     TEST_BOOL_EQ(c_command_line_is_option_set(cmdline, "opt-b"), false);
@@ -181,6 +181,25 @@ TEST(invalid_options) {
 
 TEST(arguments) {
     struct c_command_line *cmdline;
+
+    cmdline = c_command_line_new();
+    c_command_line_add_argument(cmdline, "first argument", "arg-1");
+    c_command_line_add_argument(cmdline, "second argument", "arg-2");
+
+    C_TEST_CMDLINE_PARSE(cmdline, 3, "test", "a", "b");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 0), "a");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 1), "b");
+
+    C_TEST_CMDLINE_PARSE(cmdline, 3, "test", "a", "-");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 0), "a");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 1), "-");
+
+    C_TEST_CMDLINE_PARSE(cmdline, 3, "test", "a", "--");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 0), "a");
+    TEST_STRING_EQ(c_command_line_argument_value(cmdline, 1), "--");
+
+    c_command_line_delete(cmdline);
+
 
     cmdline = c_command_line_new();
     c_command_line_add_argument(cmdline, "first argument", "arg-1");
