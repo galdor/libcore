@@ -99,6 +99,25 @@ TEST(pop) {
     TEST_INT_EQ(C_POINTER_TO_INT32(c_heap_pop(heap)), 0);
 
     c_heap_delete(heap);
+
+
+    heap = c_heap_new(c_test_heap_cmp);
+
+    c_heap_add(heap, C_INT32_TO_POINTER(3));
+    c_heap_add(heap, C_INT32_TO_POINTER(2));
+    c_heap_add(heap, C_INT32_TO_POINTER(4));
+    C_TEST_HEAP_EQ(heap, 2, 3, 4);
+
+    TEST_INT_EQ(C_POINTER_TO_INT32(c_heap_pop(heap)), 2);
+    C_TEST_HEAP_EQ(heap, 3, 4);
+
+    TEST_INT_EQ(C_POINTER_TO_INT32(c_heap_pop(heap)), 3);
+    C_TEST_HEAP_EQ(heap, 4);
+
+    TEST_INT_EQ(C_POINTER_TO_INT32(c_heap_pop(heap)), 4);
+    C_TEST_HEAP_EQ(heap);
+
+    c_heap_delete(heap);
 }
 
 TEST(find) {

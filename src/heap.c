@@ -219,14 +219,17 @@ c_heap_sink_down(struct c_heap *heap, size_t idx) {
         left_idx = idx * 2 + 1;
         right_idx = idx * 2 + 2;
 
-        if (right_idx >= heap->nb_entries)
-            break;
-
         min_idx = idx;
-        if (heap->cmp(heap->entries[min_idx], heap->entries[left_idx]) > 0)
-            min_idx = left_idx;
-        if (heap->cmp(heap->entries[min_idx], heap->entries[right_idx]) > 0)
-            min_idx = right_idx;
+
+        if (left_idx < heap->nb_entries) {
+            if (heap->cmp(heap->entries[min_idx], heap->entries[left_idx]) > 0)
+                min_idx = left_idx;
+        }
+
+        if (right_idx < heap->nb_entries) {
+            if (heap->cmp(heap->entries[min_idx], heap->entries[right_idx]) > 0)
+                min_idx = right_idx;
+        }
 
         if (min_idx == idx)
             break;
