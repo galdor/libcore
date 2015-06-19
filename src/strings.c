@@ -199,3 +199,57 @@ char *
 c_string_search(const char *haystack, const char *needle) {
     return c_memory_search(haystack, strlen(haystack), needle, strlen(needle));
 }
+
+size_t
+c_memspn(const void *data, size_t sz, const char *chars) {
+    const uint8_t *ptr, *uchars;
+    size_t nb_chars, count;
+    uint32_t table[8];
+
+    ptr = (const uint8_t *)data;
+    uchars = (const uint8_t *)chars;
+    nb_chars = strlen(chars);
+    count = 0;
+
+    memset(table, 0, sizeof(table));
+
+    for (size_t i = 0; i < nb_chars; i++)
+        table[uchars[i] / 32] |= (1 << (uchars[i] % 8));
+
+    for (size_t i = 0; i < sz; i++) {
+        if (table[ptr[i] / 32] & (1 << (ptr[i] % 8))) {
+            count++;
+        } else {
+            break;
+        }
+    }
+
+    return count;
+}
+
+size_t
+c_memcspn(const void *data, size_t sz, const char *chars) {
+    const uint8_t *ptr, *uchars;
+    size_t nb_chars, count;
+    uint32_t table[8];
+
+    ptr = (const uint8_t *)data;
+    uchars = (const uint8_t *)chars;
+    nb_chars = strlen(chars);
+    count = 0;
+
+    memset(table, 0, sizeof(table));
+
+    for (size_t i = 0; i < nb_chars; i++)
+        table[uchars[i] / 32] |= (1 << (uchars[i] % 8));
+
+    for (size_t i = 0; i < sz; i++) {
+        if (table[ptr[i] / 32] & (1 << (ptr[i] % 8))) {
+            break;
+        } else {
+            count++;
+        }
+    }
+
+    return count;
+}

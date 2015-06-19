@@ -118,6 +118,50 @@ TEST(string_search) {
 #undef C_TEST_STRING_SEARCH_NOT_FOUND
 }
 
+TEST(memspn) {
+#define C_TEST_MEMSPN(data_, sz_, chars_, ret_) \
+    do {                                        \
+        size_t ret;                             \
+                                                \
+        ret = c_memspn(data_, sz_, chars_);     \
+        TEST_UINT_EQ(ret, ret_);                \
+    } while (0)
+
+    C_TEST_MEMSPN("", 0, "", 0);
+    C_TEST_MEMSPN("foo", 3, "", 0);
+    C_TEST_MEMSPN("", 0, "abc", 0);
+    C_TEST_MEMSPN("abc", 3, "a", 1);
+    C_TEST_MEMSPN("aaaaaa", 3, "a", 3);
+    C_TEST_MEMSPN("abc", 3, "ab", 2);
+    C_TEST_MEMSPN("ababab", 3, "ab", 3);
+    C_TEST_MEMSPN("abbcd", 5, "abc", 4);
+    C_TEST_MEMSPN("abbca", 5, "abc", 5);
+    C_TEST_MEMSPN("defdef", 6, "abc", 0);
+    C_TEST_MEMSPN("defabc", 3, "abc", 0);
+
+#undef C_TEST_MEMSPN
+}
+
+TEST(memcspn) {
+#define C_TEST_MEMCSPN(data_, sz_, chars_, ret_) \
+    do {                                         \
+        size_t ret;                              \
+                                                 \
+        ret = c_memcspn(data_, sz_, chars_);     \
+        TEST_UINT_EQ(ret, ret_);                 \
+    } while (0)
+
+    C_TEST_MEMCSPN("", 0, "", 0);
+    C_TEST_MEMCSPN("foo", 3, "", 3);
+    C_TEST_MEMCSPN("foo", 3, "abc", 3);
+    C_TEST_MEMCSPN("abccd", 5, "abc", 0);
+    C_TEST_MEMCSPN("dbcca", 5, "abc", 1);
+    C_TEST_MEMCSPN("defdef", 6, "abc", 6);
+    C_TEST_MEMCSPN("defdef", 3, "abc", 3);
+
+#undef C_TEST_MEMCSPN
+}
+
 int
 main(int argc, char **argv) {
     struct test_suite *suite;
@@ -130,6 +174,8 @@ main(int argc, char **argv) {
     TEST_RUN(suite, strndup);
     TEST_RUN(suite, asprintf);
     TEST_RUN(suite, string_search);
+    TEST_RUN(suite, memspn);
+    TEST_RUN(suite, memcspn);
 
     test_suite_print_results_and_exit(suite);
 }
