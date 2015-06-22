@@ -214,10 +214,10 @@ c_memspn(const void *data, size_t sz, const char *chars) {
     memset(table, 0, sizeof(table));
 
     for (size_t i = 0; i < nb_chars; i++)
-        table[uchars[i] / 32] |= (1 << (uchars[i] % 8));
+        table[uchars[i] / 32] |= (1 << (uchars[i] % 32));
 
     for (size_t i = 0; i < sz; i++) {
-        if (table[ptr[i] / 32] & (1 << (ptr[i] % 8))) {
+        if (table[ptr[i] / 32] & (1 << (ptr[i] % 32))) {
             count++;
         } else {
             break;
@@ -241,10 +241,10 @@ c_memcspn(const void *data, size_t sz, const char *chars) {
     memset(table, 0, sizeof(table));
 
     for (size_t i = 0; i < nb_chars; i++)
-        table[uchars[i] / 32] |= (1 << (uchars[i] % 8));
+        table[uchars[i] / 32] |= (1 << (uchars[i] % 32));
 
     for (size_t i = 0; i < sz; i++) {
-        if (table[ptr[i] / 32] & (1 << (ptr[i] % 8))) {
+        if (table[ptr[i] / 32] & (1 << (ptr[i] % 32))) {
             break;
         } else {
             count++;
