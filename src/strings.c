@@ -200,6 +200,22 @@ c_string_search(const char *haystack, const char *needle) {
     return c_memory_search(haystack, strlen(haystack), needle, strlen(needle));
 }
 
+bool
+c_memory_starts_with(const void *data, size_t sz,
+                     const void *prefix, size_t prefix_sz) {
+    return sz >= prefix_sz && memcmp(data, prefix, prefix_sz) == 0;
+}
+
+bool
+c_memory_starts_with_string(const void *data, size_t sz, const char *prefix) {
+    return c_memory_starts_with(data, sz, prefix, strlen(prefix));
+}
+
+bool
+c_string_starts_with(const char *string, const char *prefix) {
+    return c_memory_starts_with(string, strlen(string), prefix, strlen(prefix));
+}
+
 size_t
 c_memspn(const void *data, size_t sz, const char *chars) {
     const uint8_t *ptr, *uchars;

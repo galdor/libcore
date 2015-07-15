@@ -118,6 +118,19 @@ TEST(string_search) {
 #undef C_TEST_STRING_SEARCH_NOT_FOUND
 }
 
+TEST(string_starts_with) {
+    TEST_TRUE(c_string_starts_with("", ""));
+    TEST_TRUE(c_string_starts_with("foo", "foo"));
+    TEST_TRUE(c_string_starts_with("foo", ""));
+    TEST_TRUE(c_string_starts_with("foo", "fo"));
+
+    TEST_FALSE(c_string_starts_with("", "foo"));
+    TEST_FALSE(c_string_starts_with("foo", "fooo"));
+    TEST_FALSE(c_string_starts_with("foo", "foo bar"));
+    TEST_FALSE(c_string_starts_with("foo", "abc"));
+    TEST_FALSE(c_string_starts_with("foo", "a"));
+}
+
 TEST(memspn) {
 #define C_TEST_MEMSPN(data_, sz_, chars_, ret_) \
     do {                                        \
@@ -174,6 +187,7 @@ main(int argc, char **argv) {
     TEST_RUN(suite, strndup);
     TEST_RUN(suite, asprintf);
     TEST_RUN(suite, string_search);
+    TEST_RUN(suite, string_starts_with);
     TEST_RUN(suite, memspn);
     TEST_RUN(suite, memcspn);
 

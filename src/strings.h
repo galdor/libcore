@@ -18,6 +18,7 @@
 #define LIBCORE_STRINGS_H
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
 char *c_strdup(const char *);
@@ -33,6 +34,10 @@ size_t c_strlcpy(char *, const char *, size_t);
 void *c_memory_search(const void *, size_t, const void *, size_t);
 char *c_memory_search_string(const void *, size_t, const char *);
 char *c_string_search(const char *, const char *);
+
+bool c_memory_starts_with(const void *, size_t, const void *, size_t);
+bool c_memory_starts_with_string(const void *, size_t, const char *);
+bool c_string_starts_with(const char *, const char *);
 
 size_t c_memspn(const void *, size_t, const char *);
 size_t c_memcspn(const void *, size_t, const char *);
