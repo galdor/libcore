@@ -437,9 +437,17 @@ c_command_line_usage_string(const struct c_command_line *cmdline) {
                 }
             }
 
-            c_buffer_add_printf(buf, "%-*s  %s\n",
-                                (int)width - 4, /* the short name is not in tmp */
+            c_buffer_add_printf(buf, "%-*s  %s",
+                                (int)width - 4, /* the short name is not
+                                                   in tmp */
                                 tmp, option->description);
+
+            if (option->default_value) {
+                c_buffer_add_printf(buf, " (default: %s)",
+                                    option->default_value);
+            }
+
+            c_buffer_add_string(buf, "\n");
         }
 
         c_free(tmp);
