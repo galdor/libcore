@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 TEST(parse_integer) {
 #define C_TEST_INT(string_, min_, max_, expected_value_, expected_sz_) \

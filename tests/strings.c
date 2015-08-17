@@ -18,7 +18,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 TEST(strndup) {
 #define C_TEST_STRNDUP(string_, len_, expected_string_) \

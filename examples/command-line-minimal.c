@@ -14,7 +14,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "internal.h"
+#include "../src/internal.h"
 
 int
 main(int argc, char **argv) {

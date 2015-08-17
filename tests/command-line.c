@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 #define C_TEST_CMDLINE_PARSE(cmdline_, nb_, ...)                        \
     do {                                                                \

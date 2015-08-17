@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 TEST(codepoint_read) {
 #define C_TEST_CODEPOINT_EQ(bytes_, codepoint_, length_)                 \

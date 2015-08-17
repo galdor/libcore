@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 TEST(initialization) {
     struct c_ptr_vector *vector;

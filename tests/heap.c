@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 static int c_test_heap_cmp(const void *, const void *);
 

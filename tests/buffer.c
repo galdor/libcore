@@ -16,7 +16,7 @@
 
 #include <utest.h>
 
-#include "internal.h"
+#include "../src/internal.h"
 
 #define C_TEST_BUFFER_EMPTY(buf_)           \
     TEST_UINT_EQ(c_buffer_length(buf_), 0)
