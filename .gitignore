@@ -16,6 +16,7 @@ session.vim
 /tests/numbers
 /tests/ptr-vector
 /tests/queue
+/tests/stack
 /tests/strings
 /tests/unicode
 /tests/vector

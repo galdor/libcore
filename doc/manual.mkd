@@ -87,6 +87,7 @@ The name of all symbols exported by the library is prefixed by `c_`.
 - [pointer vectors](ptr-vectors.html)
 - [hash tables](hash-tables.html)
 - [queues](queues.html)
+- [stacks](stacks.html)
 - [heaps](heaps.html)
 - [unicode](unicode.html)
 - [command line](command-line.html)

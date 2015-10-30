@@ -1,0 +1,116 @@
+
+# Queues
+
+## `c_stack_new`
+~~~ {.c}
+    struct c_stack *c_stack_new(void);
+~~~~
+
+Creates and returns a new empty stack. Returns `NULL` if memory allocation
+fails.
+
+## `c_stack_delete`
+~~~ {.c}
+    void c_stack_delete(struct c_stack *stack);
+~~~
+
+Frees a stack and all data associated with it.
+
+## `c_stack_length`
+~~~ {.c}
+    size_t c_stack_length(const struct c_stack *stack);
+~~~
+
+Returns the length of a stack, i.e. the number of entries it contains.
+
+## `c_stack_is_empty`
+~~~ {.c}
+    bool c_stack_is_empty(const struct c_stack *stack);
+~~~
+
+Returns `true` if a stack is empty or `false` else.
+
+## `c_stack_clear`
+~~~ {.c}
+    void c_stack_clear(struct c_stack *stack);
+~~~
+
+Removes and delete all entries contained in a stack.
+
+## `c_stack_push`
+~~~ {.c}
+    int c_stack_push(struct c_stack *stack, void *value);
+~~~
+
+Adds a new entry at the top of a stack. Returns 0 on success or -1 if memory
+allocation fails.
+
+## `c_stack_peek`
+~~~ {.c}
+    void *c_stack_peek(const struct c_stack *stack);
+~~~
+
+Returns the value of the top entry of a stack, or `NULL` if the stack is
+empty.
+
+## `c_stack_pop`
+~~~ {.c}
+    void *c_stack_pop(struct c_stack *stack);
+~~~
+
+Removes the value of the top entry of a stack if it contains at least one
+entry and return its value, or returns `NULL` if the stack is empty.
+
+## `c_stack_top_entry`
+~~~ {.c}
+    struct c_stack_entry *c_stack_top_entry(struct c_stack *stack);
+~~~
+
+Returns the top entry of a stack or `NULL` if the stack is empty.
+
+## `c_stack_bottom_entry`
+~~~ {.c}
+    struct c_stack_entry *c_stack_bottom_entry(struct c_stack *stack);
+~~~
+
+Returns the bottom entry of a stack or `NULL` if the stack is empty.
+
+## `c_stack_entry_delete`
+~~~ {.c}
+    void c_stack_entry_delete(struct c_stack_entry *entry);
+~~~
+
+Deletes a stack entry. The behaviour of the function is undefined if the stack
+entry is still in a stack.
+
+## `c_stack_entry_prev`
+~~~ {.c}
+    struct c_stack_entry *c_stack_entry_prev(struct c_stack_entry *entry);
+~~~
+
+Returns the previous entry of a stack entry, i.e. the one just above it in the
+stack, or `NULL` if the entry is the top entry in the stack.
+
+## `c_stack_entry_next`
+~~~ {.c}
+    struct c_stack_entry *c_stack_entry_next(struct c_stack_entry *entry);
+~~~
+
+Returns the next entry of a stack entry, i.e. the one just below it in the
+stack,  or `NULL` if the entry is the bottom entry in the stack.
+
+## `c_stack_entry_value`
+~~~ {.c}
+    void *c_stack_entry_value(const struct c_stack_entry *entry);
+~~~
+
+Returns the value of a stack entry.
+
+## `c_stack_remove_entry`
+~~~ {.c}
+    void c_stack_remove_entry(struct c_stack *stack, struct c_stack_entry *entry);
+~~~
+
+Removes an entry from a stack. This functions transfers ownership of the stack
+entry to the caller; the entry will have to be deleted with
+`c_stack_entry_delete`.

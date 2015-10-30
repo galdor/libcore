@@ -36,6 +36,7 @@
 #include "unicode.h"
 #include "command-line.h"
 #include "queue.h"
+#include "stack.h"
 #include "heap.h"
 
 #endif
