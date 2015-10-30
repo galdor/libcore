@@ -28,6 +28,7 @@
 #include <core/unicode.h>
 #include <core/command-line.h>
 #include <core/queue.h>
+#include <core/stack.h>
 #include <core/heap.h>
 
 #endif
