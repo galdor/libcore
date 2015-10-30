@@ -17,8 +17,6 @@
 #ifndef LIBCORE_QUEUE_H
 #define LIBCORE_QUEUE_H
 
-#include <stdlib.h>
-
 struct c_queue *c_queue_new(void);
 void c_queue_delete(struct c_queue *);
 
